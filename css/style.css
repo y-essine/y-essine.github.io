@@ -1,0 +1,38 @@
+:root {
+    background: #1D1D1D;
+}
+
+html {
+    min-height: 100%;
+    margin: 0;
+}
+body {
+    min-height: 100%;
+    margin: 0;
+}
+
+.flex {
+    display: flex;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.h-100 {
+    height: 100%;
+}
+
+h1 {
+    font-size: 5rem;
+    color: #cecece;
+    font-weight: bolder;
+}
