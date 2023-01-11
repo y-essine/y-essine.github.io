@@ -1,2 +1,13 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script>
+	import Canvas from '$components/3d/Canvas.svelte';
+	import Projects from '$components/projects/list.svelte';
+</script>
+
+<h1 class="font-extrabold">Home</h1>
+<div class="mt-10">
+	<Canvas />
+</div>
+<div class="mt-10">
+	<h3 class="font-extrabold">Projects I've worked on</h3>
+	<Projects />
+</div>

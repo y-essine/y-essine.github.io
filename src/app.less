@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+	--font-family-base: Inter, -apple-system, sans-serif;
+	font-family: var(--font-family-base);
+	@apply min-h-full bg-zinc-900 text-zinc-300 text-xl overflow-y-auto;
+}
+
+body {
+	@apply h-full m-0;
+}
+
+::-webkit-scrollbar {
+	width: 0.5rem;
+}
+::-webkit-scrollbar-track {
+	@apply bg-zinc-800/70;
+}
+::-webkit-scrollbar-thumb {
+	@apply bg-zinc-700/50;
+}
