@@ -1,4 +1,5 @@
 <script>
+	import { page } from '$app/stores';
 	import NavbarItem from './NavbarItem.svelte';
 
 	let links = {
@@ -21,7 +22,7 @@
 </script>
 
 <div class="h-20 flex items-center justify-center gap-5">
-	<NavbarItem {...links.home} />
-	<NavbarItem {...links.about} />
-	<NavbarItem {...links.contact} />
+	<NavbarItem {...links.home} page={$page.url.pathname} />
+	<NavbarItem {...links.about} page={$page.url.pathname} />
+	<NavbarItem {...links.contact} page={$page.url.pathname} />
 </div>

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	export let page: string = '';
 
 	export let name: string;
 	export let href: string;
@@ -9,7 +9,7 @@
 <a
 	{href}
 	class="hover:bg-zinc-800/70 duration-200 px-3 py-2 rounded-md"
-	class:active={$page.url.pathname == href}
+	class:active={page == href}
 >
 	{#if icon}
 		{icon}
