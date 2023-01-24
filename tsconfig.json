@@ -3,11 +3,9 @@
 	"compilerOptions": {
 		"baseUrl": ".",
 		"paths": {
-			"$lib": ["src/lib"],
 			"$lib/*": ["src/lib/*"],
-			"$components": ["src/lib/components"],
+			"$shared/*": ["src/lib/shared/*"],
 			"$components/*": ["src/lib/components/*"],
-			"$assets": ["src/lib/assets"],
 			"$assets/*": ["src/lib/assets/*"]
 		},
 		"allowJs": true,

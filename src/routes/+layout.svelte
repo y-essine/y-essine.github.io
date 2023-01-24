@@ -1,15 +1,12 @@
-<script>
+<script lang="ts">
 	import '../app.less';
 	import '@fontsource/inter';
 
-	import { page } from '$app/stores';
-	import PageTransition from '$components/ui/PageTransition.svelte';
-	import Navbar from '$components/ui/Navbar/Navbar.svelte';
+	import Navbar from '$lib/components/ui/navbar/Navbar.svelte';
+	import Transition from '$shared/transition.svelte';
 </script>
 
 <Navbar />
-<div class="flex flex-col items-center pt-5 pb-10">
-	<PageTransition refresh={$page.url.pathname}>
-		<slot />
-	</PageTransition>
+<div class="flex flex-col items-center pt-5 pb-10 px-10">
+	<Transition><slot /></Transition>
 </div>

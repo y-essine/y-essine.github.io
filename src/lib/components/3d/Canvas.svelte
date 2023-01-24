@@ -1,68 +1,42 @@
-<!-- <script>
-	import {
-		Canvas,
-		Scene,
-		PerspectiveCamera,
-		DirectionalLight,
-		//BasicShadowMap,
-		//PCFShadowMap,
-		PCFSoftShadowMap,
-		//VSMShadowMap,
-		AmbientLight,
-		BoxBufferGeometry,
-		PlaneBufferGeometry,
-		Mesh,
-		MeshStandardMaterial,
-		WebGLRenderer,
-		OrbitControls,
-		DoubleSide,
-		MathUtils
-	} from 'https://unpkg.com/svelthree@latest/dist/svelthree.mjs';
+<script>
+	import { Canvas, InteractiveObject, OrbitControls, T } from '@threlte/core';
+	import { spring } from 'svelte/motion';
+	import { degToRad } from 'three/src/math/MathUtils';
 
-	let cubeGeometry = new BoxBufferGeometry(1, 1, 1);
-	let cubeMaterial = new MeshStandardMaterial();
-
-	let floorGeometry = new PlaneBufferGeometry(4, 4, 1);
-	let floorMaterial = new MeshStandardMaterial();
+	const scale = spring(1);
 </script>
 
-<Canvas let:sti w={500} h={500}>
-	<Scene {sti} let:scene id="scene1" props={{ background: 0xedf2f7 }}>
-		<PerspectiveCamera {scene} id="cam1" pos={[0, 0, 3]} lookAt={[0, 0, 0]} />
-		<AmbientLight {scene} intensity={1.25} />
-		<DirectionalLight {scene} pos={[1, 2, 1]} intensity={0.8} shadowMapSize={512 * 8} castShadow />
+<div class="flex justify-center items-center rounded-lg p-3 h-64">
+	<!-- <div class="text-3xl font-extrabold select-none">Canvas</div> -->
+	<Canvas>
+		<T.PerspectiveCamera makeDefault position={[10, 10, 10]} fov={16}>
+			<OrbitControls maxPolarAngle={degToRad(80)} enableZoom={false} target={{ y: 0.5 }} />
+		</T.PerspectiveCamera>
 
-		<Mesh
-			{scene}
-			geometry={cubeGeometry}
-			material={cubeMaterial}
-			mat={{ roughness: 0.5, metalness: 0.5, color: 0xff3e00 }}
-			pos={[0, 0, 0]}
-			rot={[0, 0, 0]}
-			castShadow
-			receiveShadow
-		/>
+		<T.DirectionalLight castShadow position={[3, 10, 10]} />
+		<T.DirectionalLight position={[-3, 10, -10]} intensity={0.2} />
+		<T.AmbientLight intensity={0.2} />
 
-		<Mesh
-			{scene}
-			geometry={floorGeometry}
-			material={floorMaterial}
-			mat={{ roughness: 0.5, metalness: 0.5, side: DoubleSide, color: 0xf7fafc }}
-			pos={[0, -0.501, 0]}
-			rot={[MathUtils.degToRad(-90), 0, 0]}
-			scale={[1, 1, 1]}
-			receiveShadow
-		/>
+		<!-- Cube -->
+		<T.Group scale={$scale}>
+			<T.Mesh position.y={0.5} castShadow let:ref>
+				<!-- Add interaction -->
+				<InteractiveObject
+					object={ref}
+					interactive
+					on:pointerenter={() => ($scale = 2)}
+					on:pointerleave={() => ($scale = 1)}
+				/>
 
-		<OrbitControls {scene} autoRotate enableDamping />
-	</Scene>
+				<T.BoxGeometry />
+				<T.MeshStandardMaterial color="#333333" />
+			</T.Mesh>
+		</T.Group>
 
-	<WebGLRenderer
-		{sti}
-		sceneId="scene1"
-		camId="cam1"
-		config={{ antialias: true, alpha: true }}
-		enableShadowMap
-		shadowMapType={PCFSoftShadowMap}
-	/>
-</Canvas> -->
+		<!-- Floor -->
+		<T.Mesh receiveShadow rotation.x={degToRad(-90)}>
+			<T.CircleGeometry args={[2, 72]} />
+			<T.MeshStandardMaterial color="white" />
+		</T.Mesh>
+	</Canvas>
+</div>

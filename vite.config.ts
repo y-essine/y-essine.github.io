@@ -10,9 +10,13 @@ const config: UserConfig = {
 	resolve: {
 		alias: {
 			$lib: path.resolve('./src/lib'),
+			$shared: path.resolve('./src/lib/shared'),
 			$components: path.resolve('./src/lib/components'),
 			$assets: path.resolve('./src/assets')
 		}
+	},
+	ssr: {
+		noExternal: ['three', 'troika-three-text']
 	}
 };
 
