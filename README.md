@@ -4,11 +4,14 @@ This project serves as my own portfolio, built using Svelte/SvelteKit and will b
 
 ## Setup
 You just have to install the dependencies
+
 ```npm i```
 
 ## Run the project
 To run it in development mode
+
 ```npm run dev``` 
 
 To run production
+
 ```npm build && npm run preview``` 
