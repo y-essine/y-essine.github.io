@@ -3,7 +3,7 @@
 	import '@fontsource/inter';
 
 	import Navbar from '$lib/components/ui/navbars/Navbar.svelte';
-	import Transition from '$lib/shared/Transition.svelte';
+	import Transition from '$lib/shared/Transitions.svelte';
 </script>
 
 <Navbar />
