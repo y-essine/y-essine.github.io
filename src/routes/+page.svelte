@@ -1,6 +1,5 @@
 <script lang="ts">
 	import Projects from '$components/projects/list.svelte';
-	import Spinner from '$lib/components/ui/loading/Spinner.svelte';
 	import Lazy from '$shared/Lazy.svelte';
 
 	const delayModuleLoad = (module: any) =>
