@@ -2,7 +2,7 @@
 	import '../app.less';
 	import '@fontsource/inter';
 
-	import Navbar from '$lib/components/ui/navbar/Navbar.svelte';
+	import Navbar from '$lib/components/ui/navbars/Navbar.svelte';
 	import Transition from '$lib/shared/Transition.svelte';
 </script>
 
