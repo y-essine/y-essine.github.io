@@ -1,0 +1,4 @@
+{
+	// sveltekit extension pack
+	"recommendations": ["1yib.svelte-bundle"]
+}
