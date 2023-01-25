@@ -9,10 +9,6 @@
 		delay?: number;
 	};
 
-	onMount(() => {
-		console.log(transition);
-	});
-
 	export let transition: Transition = { type: 'page' };
 </script>
 

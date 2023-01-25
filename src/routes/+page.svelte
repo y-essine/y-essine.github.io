@@ -9,10 +9,13 @@
 	const Canvas = () => import('$components/3d/Canvas.svelte').then(delayModuleLoad);
 </script>
 
+<svelte:head>
+	<title>Home - YESSINE</title>
+</svelte:head>
 <div class="flex justify-center">
 	<h1 class="font-extrabold">Home</h1>
 </div>
-<div class="mt-10">
+<div class="mt-5">
 	<Lazy component={Canvas} />
 </div>
 <div class="mt-10">
