@@ -6,11 +6,16 @@
 	const scale = spring(1);
 </script>
 
-<div class="flex justify-center items-center rounded-lg p-3 h-64">
+<div class="flex justify-center items-center rounded-lg p-3 h-64 max-w-xl">
 	<!-- <div class="text-3xl font-extrabold select-none">Canvas</div> -->
 	<Canvas>
 		<T.PerspectiveCamera makeDefault position={[10, 10, 10]} fov={16}>
-			<OrbitControls maxPolarAngle={degToRad(80)} enableZoom={false} target={{ y: 0.5 }} />
+			<OrbitControls
+				maxPolarAngle={degToRad(80)}
+				enableZoom={false}
+				target={{ y: 0.5 }}
+				enablePan={false}
+			/>
 		</T.PerspectiveCamera>
 
 		<T.DirectionalLight castShadow position={[3, 10, 10]} />
