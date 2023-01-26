@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Spinner from '$components/ui/loading/Spinner.svelte';
 	import { onMount } from 'svelte';
-	import Transition from './Transitions.svelte';
+	import Transition from './Transition.svelte';
 
 	export let component: any;
 
