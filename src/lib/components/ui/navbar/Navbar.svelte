@@ -1,27 +1,46 @@
 <script lang="ts">
+	import { page } from '$app/stores';
+	import { pageIndex } from '$shared/store';
 	import NavbarItem from './NavbarItem.svelte';
+	import NavbarSnake from './NavbarSnake.svelte';
 
-	let links = {
-		home: {
-			name: 'Home',
+	let myIndex = 0;
+	pageIndex.subscribe((value) => {
+		console.log('changed');
+		myIndex = value;
+	});
+
+	const links = [
+		{
+			name: '@y-essine',
 			href: '/',
 			icon: null
 		},
-		about: {
-			name: 'About',
+		{
+			name: 'about',
 			href: '/about',
 			icon: null
 		},
-		contact: {
-			name: 'Contact',
+		{
+			name: 'contact',
 			href: '/contact',
 			icon: null
 		}
-	};
+	];
 </script>
 
-<div class="h-20 flex items-center justify-center gap-5">
-	<NavbarItem {...links.home} />
-	<NavbarItem {...links.about} />
-	<NavbarItem {...links.contact} />
+<div class="p-4 w-full flex justify-center">
+	<div class="h-fit w-fit">
+		<div class="flex items-center justify-center gap-5">
+			{#each links as link, index}
+				<NavbarItem {...link} {index} />
+			{/each}
+		</div>
+		<div class="pt-2">
+			<NavbarSnake />
+		</div>
+		<div class="pt-2">
+			{myIndex}
+		</div>
+	</div>
 </div>

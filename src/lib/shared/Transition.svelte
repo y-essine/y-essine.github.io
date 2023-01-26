@@ -20,7 +20,7 @@
 	{/key}
 {:else if transition.type === 'component'}
 	<div
-		class="fadeScale"
+		class="fadeScale h-full w-full"
 		style:animation-duration="{transition.duration || 250}ms"
 		style:animation-delay="{transition.delay || 0}ms"
 	>

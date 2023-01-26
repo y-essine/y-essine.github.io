@@ -18,12 +18,5 @@
 		"sourceMap": true,
 		"strict": true
 	},
-	"exclude": [
-		"node_modules",
-		"src/node_modules",
-		"src/node_modules/*",
-		"static",
-		"src/static",
-		"src/static/*"
-	]
+	"exclude": ["static", "src/static", "src/static/*"]
 }
