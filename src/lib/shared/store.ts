@@ -1,4 +1,4 @@
 import { writable } from 'svelte/store';
 
-export const page = writable({ isHome: true, isAbout: false, isContact: false });
+export const currentPage = writable('home');
 export const pageIndex = writable(0);

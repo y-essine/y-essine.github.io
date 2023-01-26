@@ -1,7 +1,9 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition';
 	import { page } from '$app/stores';
-	import { onMount } from 'svelte';
+	import { pageIndex } from './store';
+
+	$: console.log($pageIndex);
 
 	type Transition = {
 		type: 'page' | 'component';
@@ -13,7 +15,7 @@
 </script>
 
 {#if transition.type === 'page'}
-	{#key $page.url}
+	{#key $page.url.pathname}
 		<div in:fly={{ x: -20, duration: transition.duration || 250, delay: transition.delay || 0 }}>
 			<slot />
 		</div>

@@ -1,21 +1,19 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import { pageIndex } from '$shared/store';
 
-	$: path = $page.url.pathname;
-
-	const isActive = () => {
-		if (path === href) {
-			pageIndex.set(index);
-			return true;
-		}
-		return false;
-	};
-
+	export let index: number = 0;
 	export let name: string;
 	export let href: string;
 	export let icon: any = false;
-	export let index: number = 0;
+	export let isActive: boolean = false;
+
+	$: handleChange(isActive);
+
+	const handleChange = (isActive: boolean) => {
+		if (isActive) {
+			pageIndex.set(index);
+		}
+	};
 </script>
 
 <a
@@ -31,6 +29,6 @@
 
 <style>
 	.active {
-		@apply bg-zinc-800;
+		/* @apply bg-zinc-800; */
 	}
 </style>

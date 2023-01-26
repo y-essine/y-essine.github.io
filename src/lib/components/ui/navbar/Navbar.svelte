@@ -1,14 +1,9 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { pageIndex } from '$shared/store';
+	import { pageIndex, currentPage } from '$shared/store';
+	import { onDestroy } from 'svelte';
 	import NavbarItem from './NavbarItem.svelte';
 	import NavbarSnake from './NavbarSnake.svelte';
-
-	let myIndex = 0;
-	pageIndex.subscribe((value) => {
-		console.log('changed');
-		myIndex = value;
-	});
 
 	const links = [
 		{
@@ -27,20 +22,27 @@
 			icon: null
 		}
 	];
+
+	$: path = $page.url.pathname;
+
+	let currentIndex = 0;
+	const unsub = pageIndex.subscribe((value) => {
+		currentIndex = value;
+		currentPage.set(links[currentIndex].name);
+	});
+
+	onDestroy(unsub);
 </script>
 
 <div class="p-4 w-full flex justify-center">
 	<div class="h-fit w-fit">
 		<div class="flex items-center justify-center gap-5">
 			{#each links as link, index}
-				<NavbarItem {...link} {index} />
+				<NavbarItem {...link} {index} isActive={link.href === path} />
 			{/each}
 		</div>
 		<div class="pt-2">
-			<NavbarSnake />
-		</div>
-		<div class="pt-2">
-			{myIndex}
+			<NavbarSnake {currentIndex} />
 		</div>
 	</div>
 </div>

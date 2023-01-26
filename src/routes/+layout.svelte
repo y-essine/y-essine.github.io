@@ -7,10 +7,7 @@
 
 	import Lazy from '$shared/Lazy.svelte';
 
-	const delayModuleLoad = (module: any) =>
-		new Promise((res) => setTimeout(() => res(module), Math.random() * 2000));
-
-	const Shiba = () => import('$components/3d/Shiba.svelte').then(delayModuleLoad);
+	const Shiba = () => import('$components/3d/Shiba.svelte');
 </script>
 
 <Navbar />
