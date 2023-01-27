@@ -5,33 +5,28 @@
 	import NavbarItem from './NavbarItem.svelte';
 	import NavbarSnake from './NavbarSnake.svelte';
 
-	const links = [
+	let links = [
 		{
 			name: '@y-essine',
 			href: '/',
-			icon: null
+			icon: null,
+			ref: null
 		},
 		{
 			name: 'about',
 			href: '/about',
-			icon: null
+			icon: null,
+			ref: null
 		},
 		{
 			name: 'contact',
 			href: '/contact',
-			icon: null
+			icon: null,
+			ref: null
 		}
 	];
 
 	$: path = $page.url.pathname;
-
-	let currentIndex = 0;
-	const unsub = pageIndex.subscribe((value) => {
-		currentIndex = value;
-		currentPage.set(links[currentIndex].name);
-	});
-
-	onDestroy(unsub);
 </script>
 
 <div class="p-4 w-full flex justify-center">
@@ -42,7 +37,7 @@
 			{/each}
 		</div>
 		<div class="pt-2">
-			<NavbarSnake {currentIndex} />
+			<!-- <NavbarSnake {currentIndex} /> -->
 		</div>
 	</div>
 </div>

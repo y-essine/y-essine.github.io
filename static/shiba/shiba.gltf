@@ -137,7 +137,7 @@
 	"buffers": [
 		{
 			"byteLength": 133296,
-			"uri": "shiba.bin"
+			"uri": "scene.bin"
 		}
 	],
 	"extensionsUsed": ["KHR_materials_unlit"],

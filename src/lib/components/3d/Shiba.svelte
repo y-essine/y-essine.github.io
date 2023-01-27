@@ -15,7 +15,8 @@
 	</div> -->
 	<div class="absolute h-full">
 		<Canvas>
-			<Scene scale={$scl.val} rotation={$rot.y} />
+			<!-- <Scene scale={$scl.val} rotation={$rot.y} /> -->
+			<Scene />
 		</Canvas>
 	</div>
 </div>
