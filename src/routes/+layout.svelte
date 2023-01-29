@@ -1,6 +1,6 @@
 <script lang="ts">
+	// import '@fontsource/inter';
 	import '../app.less';
-	import '@fontsource/inter';
 
 	import Navbar from '$lib/components/ui/navbar/Navbar.svelte';
 	import Transition from '$lib/shared/Transition.svelte';

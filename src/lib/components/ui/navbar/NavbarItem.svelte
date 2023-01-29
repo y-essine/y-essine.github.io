@@ -18,12 +18,9 @@
 
 <a
 	{href}
-	class="hover:bg-zinc-800/70 duration-200 px-2 rounded-md w-40 flex justify-center"
+	class="hover:bg-zinc-800/70 duration-200 transition-colors px-2 rounded-md h-[35px] w-18 sm:w-32 lg:w-40 flex justify-center"
 	class:active={isActive}
 >
-	{#if icon}
-		{icon}
-	{/if}
 	<span class="text-sm sm:text-xl lg:text-2xl font-semibold">{name}</span>
 </a>
 
