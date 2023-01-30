@@ -1,25 +1,26 @@
 <script lang="ts">
-	import { page } from '$app/stores';
-	$: path = $page.url.pathname;
+	import { updatePageIndex } from '@shared/store';
 
+	export let index: number = 0;
+	export let handle: string;
 	export let name: string;
 	export let href: string;
-	export let icon: any = false;
+	export let isActive: boolean = false;
+
+	$: handleChange(isActive);
+
+	const handleChange = (isActive: boolean) => {
+		if (isActive) {
+			updatePageIndex(index);
+		}
+	};
 </script>
 
 <a
 	{href}
-	class="hover:bg-zinc-800/70 duration-200 px-3 py-2 rounded-md"
-	class:active={path == href}
+	class="hover:bg-zinc-800/70 duration-200 transition-colors px-2 rounded-md h-10 items-center w-20  sm:w-32 lg:w-40 flex justify-center"
+	class:active={isActive}
+	id="navbar-{handle}"
 >
-	{#if icon}
-		{icon}
-	{/if}
-	<span class="md:text-2xl font-extrabold">{name}</span>
+	<span class="text-sm sm:text-xl lg:text-2xl font-semibold">{name}</span>
 </a>
-
-<style>
-	.active {
-		@apply bg-zinc-800;
-	}
-</style>

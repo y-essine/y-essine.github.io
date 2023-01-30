@@ -1,27 +1,22 @@
-<script lang="ts">
-	import { T, OrbitControls } from '@threlte/core';
-	import { GLTF } from '@threlte/extras';
-	import { degToRad } from 'three/src/math/MathUtils';
+<script>
+	import { spring } from 'svelte/motion';
+	import { Canvas } from '@threlte/core';
+	import Controls from './Controls.svelte';
+	import Scene from './Scene.svelte';
 
-	export let scale = 0.5;
-	export let rotation = 0;
+	let rot = spring({ x: 0, y: 0 }, { stiffness: 0.1, damping: 0.25 });
+	let scl = spring({ val: 2 }, { stiffness: 0.1, damping: 0.25 });
 </script>
 
-<T.PerspectiveCamera makeDefault position={[10, 10, 10]} fov={10}>
-	<OrbitControls maxPolarAngle={degToRad(80)} enableZoom={false} enablePan={false} />
-</T.PerspectiveCamera>
-
-<T.Group {scale} rotation.y={rotation}>
-	<T.Mesh position={[0, 0.3, 0.5]}>
-		<GLTF castShadow receiveShadow url={'/shiba/shiba.glb'} interactive />
-	</T.Mesh>
-</T.Group>
-
-<!-- <T.Mesh receiveShadow rotation.x={degToRad(-90)}>
-	<T.CircleGeometry args={[2, 60]} />
-	<T.MeshStandardMaterial color="white" />
-</T.Mesh> -->
-
-<T.DirectionalLight position={[3, 10, 10]} castShadow />
-<T.DirectionalLight position={[-3, 10, -10]} intensity={0.2} />
-<T.AmbientLight intensity={0.5} />
+<div class="flex justify-center items-center rounded-lg h-full max-w-xl relative">
+	<!-- <div class="absolute right-0 opacity-90 bg-white/5 p-5 rounded-lg select-none">
+		<div class="text-3xl font-extrabold mb-3">Controls</div>
+		<Controls bind:rotation={rot} bind:scale={scl} />
+	</div> -->
+	<div class="absolute h-full">
+		<Canvas>
+			<!-- <Scene scale={$scl.val} rotation={$rot.y} /> -->
+			<Scene />
+		</Canvas>
+	</div>
+</div>

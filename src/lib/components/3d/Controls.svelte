@@ -14,8 +14,8 @@
 	<input
 		id="steps-range"
 		type="range"
-		min=".38"
-		max="1.5"
+		min="1"
+		max="2.6"
 		bind:value={scaleVal}
 		on:input={() => {
 			scale.set({ val: scaleVal });

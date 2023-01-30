@@ -20,7 +20,7 @@ export const updateModelStatus = (name: string, status: string) => {
 
 // List of example model URLs
 export const modelURL = {
-	shiba: '/static/3d/shiba/scene.gltf'
+	shiba: '/shiba/shiba.gltf'
 };
 /*
 	Models taken from the threejs examples. 

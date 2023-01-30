@@ -1,13 +1,8 @@
 <script lang="ts">
-	import Spinner from '$components/ui/loading/Spinner.svelte';
-	import { onMount } from 'svelte';
+	import Spinner from '@components/ui/Spinner.svelte';
 	import Transition from './Transition.svelte';
 
 	export let component: any;
-
-	let loadedComponent: any = null;
-	let timeout: NodeJS.Timeout;
-	let showFallback = true;
 
 	let props: any;
 
@@ -16,21 +11,17 @@
 		props = rest;
 	}
 
-	onMount(() => {
-		component().then((module: any) => {
-			loadedComponent = module.default;
-			showFallback = false;
-		});
-		return () => clearTimeout(timeout);
+	const loadComponent = component().then((module: any) => {
+		return module.default;
 	});
 </script>
 
-{#key loadedComponent}
-	<Transition transition={{ type: 'component' }}
-		>{#if showFallback}
-			<Spinner />
-		{:else if loadedComponent}
-			<svelte:component this={loadedComponent} {...props} />
-		{/if}
+{#await loadComponent}
+	<Transition transition={{ type: 'component' }}>
+		<Spinner />
 	</Transition>
-{/key}
+{:then component}
+	<Transition transition={{ type: 'component' }}>
+		<svelte:component this={component} {...props} />
+	</Transition>
+{/await}
