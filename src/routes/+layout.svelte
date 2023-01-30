@@ -2,22 +2,25 @@
 	// import '@fontsource/inter';
 	import '../app.less';
 
-	import Navbar from '$lib/components/ui/navbar/Navbar.svelte';
-	import Transition from '$lib/shared/Transition.svelte';
-
-	import Lazy from '$shared/Lazy.svelte';
-
-	const Shiba = () => import('$components/3d/Shiba.svelte');
+	import Navbar from '@components/ui/navbar/Navbar.svelte';
+	import Transition from '@shared/Transition.svelte';
+	import LazyF from '@shared/LazyFetched.svelte';
+	import { fetchStatus } from '@shiba/store';
+	import { currentPage } from '@shared/store';
+	const Shiba = () => import('@components/3d/Shiba.svelte');
 </script>
 
 <Navbar />
 <div class="flex flex-col items-center">
 	<div class="h-40">
-		<Lazy component={Shiba} />
+		<LazyF component={Shiba} fetched={$fetchStatus} />
 	</div>
-	<div class="p-7 pt-0">
+	<h1>{$currentPage}</h1>
+	<div class="p-7 pt-0 ">
 		<Transition>
-			<slot />
+			<div class="mt-3">
+				<slot />
+			</div>
 		</Transition>
 	</div>
 </div>

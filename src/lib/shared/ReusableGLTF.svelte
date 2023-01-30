@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Object3DInstance } from '@threlte/core';
 	import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+	import { setIsFetched } from '@shiba/store';
 
 	export let modelURL: string;
 
@@ -9,7 +10,10 @@
 		return loader.loadAsync(modelURL);
 	}
 
-	const loadGLTF = loader();
+	const loadGLTF = loader().then((r) => {
+		setIsFetched(true);
+		return r;
+	});
 </script>
 
 {#await loadGLTF then gltf}

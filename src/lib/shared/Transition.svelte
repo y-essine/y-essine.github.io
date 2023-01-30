@@ -1,19 +1,28 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition';
 	import { page } from '$app/stores';
+	import { isRight } from '@shared/store';
 
 	type Transition = {
 		type: 'page' | 'component';
 		duration?: number;
 		delay?: number;
+		left?: boolean;
+		right?: boolean;
 	};
 
-	export let transition: Transition = { type: 'page' };
+	export let transition: Transition = { type: 'page', left: true };
 </script>
 
 {#if transition.type === 'page'}
 	{#key $page.url.pathname}
-		<div in:fly={{ x: -20, duration: transition.duration || 250, delay: transition.delay || 0 }}>
+		<div
+			in:fly={{
+				x: $isRight ? 20 : -20,
+				duration: transition.duration || 250,
+				delay: transition.delay || 0
+			}}
+		>
 			<slot />
 		</div>
 	{/key}
@@ -35,7 +44,7 @@
 	@keyframes fadeScale {
 		from {
 			opacity: 0;
-			transform: scale(0.7);
+			transform: scale(0.5);
 		}
 		to {
 			opacity: 1;

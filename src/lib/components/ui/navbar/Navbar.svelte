@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { links, pageIndex, currentPage } from '$shared/store';
+	import { links, pageIndex } from '@shared/store';
 	import { onDestroy } from 'svelte';
 	import NavbarItem from './NavbarItem.svelte';
 	import NavbarSnake from './NavbarSnake.svelte';
@@ -16,7 +16,7 @@
 			{/each}
 		</div>
 		<div class="pt-2">
-			<!-- <NavbarSnake {currentIndex} /> -->
+			<NavbarSnake />
 		</div>
 	</div>
 </div>

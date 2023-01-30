@@ -1,12 +1,9 @@
 <script lang="ts">
 	import { T } from '@threlte/core';
 	import { Float } from '@threlte/extras';
-	import ReusableGltf from './ReusableGLTF.svelte';
+	import ReusableGLTF from '@shared/ReusableGLTF.svelte';
 
-	import Lazy from '$shared/Lazy.svelte';
-	// const ReusableGltf = () => import('./ReusableGLTF.svelte');
-
-	export let scale = 1;
+	export let scale = 2;
 	export let rotation = 0;
 </script>
 
@@ -15,8 +12,7 @@
 <Float floatIntensity={5} speed={6}>
 	<T.Group {scale} rotation.y={rotation}>
 		<T.Mesh position={[0, 0.3, 1]}>
-			<ReusableGltf modelURL={'/shiba/shiba.gltf'} />
-			<!-- <Lazy component={ReusableGltf} modelURL={'/shiba/shiba.gltf'} /> -->
+			<ReusableGLTF modelURL={'/shiba/shiba.gltf'} />
 		</T.Mesh>
 	</T.Group>
 </Float>

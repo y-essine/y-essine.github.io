@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Spinner from '$lib/components/ui/Spinner.svelte';
+	import Spinner from '@components/ui/Spinner.svelte';
 	import Transition from './Transition.svelte';
 
 	export let component: any;
@@ -11,15 +11,17 @@
 		props = rest;
 	}
 
-	const loadSuspend = import('$components/projects/Suspend.svelte').then((module: any) => {
+	const loadComponent = component().then((module: any) => {
 		return module.default;
 	});
 </script>
 
-{#await loadSuspend}
+{#await loadComponent}
 	<Transition transition={{ type: 'component' }}>
 		<Spinner />
 	</Transition>
-{:then suspend}
-	<svelte:component this={suspend} {...props} {component} />
+{:then component}
+	<Transition transition={{ type: 'component' }}>
+		<svelte:component this={component} {...props} />
+	</Transition>
 {/await}
