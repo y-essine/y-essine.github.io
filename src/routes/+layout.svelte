@@ -15,7 +15,6 @@
 	<div class="h-40">
 		<LazyF component={Shiba} fetched={$fetchStatus} />
 	</div>
-	<h1>{$currentPage}</h1>
 	<div class="p-7 pt-0 ">
 		<Transition>
 			<div class="mt-3">
