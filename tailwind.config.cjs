@@ -4,7 +4,8 @@ module.exports = {
     theme: {
         extend: {},
         fontFamily: {
-            sans: ['Inter']
+            sans: ['Inter'],
+            mplus: ["'M PLUS Rounded 1c'"]
         }
     },
     plugins: []

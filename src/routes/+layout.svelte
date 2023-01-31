@@ -7,7 +7,7 @@
 	import LazyF from '@shared/LazyFetched.svelte';
 	import { fetchStatus } from '@shiba/store';
 	import { currentPage } from '@shared/store';
-	const Shiba = () => import('@components/3d/Shiba.svelte');
+	const Shiba = () => import('@shiba/Shiba.svelte');
 </script>
 
 <Navbar />
