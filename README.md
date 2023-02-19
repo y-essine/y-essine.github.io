@@ -1,6 +1,8 @@
 # My own portfolio app
 
-__ Currently redesigning it to gta san andreas theme__
+__Currently redesigning it to gta san andreas theme__
+
+
 This project serves as my own portfolio, built using Svelte/SvelteKit and will be deployed soon to https://yessine.dev
 
 ## Setup
