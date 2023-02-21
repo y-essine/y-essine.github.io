@@ -12,7 +12,7 @@
 
 <Navbar />
 <div class="flex flex-col items-center">
-	<div class="h-40">
+	<div class="h-64">
 		<LazyF component={Shiba} fetched={$fetchStatus} />
 	</div>
 	<div class="p-7 pt-0 ">

@@ -3,6 +3,7 @@
 	import { Canvas } from '@threlte/core';
 	import Controls from '../components/3d/Controls.svelte';
 	import Scene from './Scene.svelte';
+	import ReusableGLTF from '@shared/ReusableGLTF.svelte';
 
 	let rot = spring({ x: 0, y: 0 }, { stiffness: 0.1, damping: 0.25 });
 	let scl = spring({ val: 2 }, { stiffness: 0.1, damping: 0.25 });
@@ -15,7 +16,9 @@
 	</div> -->
 	<div class="absolute h-full">
 		<Canvas>
-			<Scene />
+			<Scene>
+				<ReusableGLTF modelURL={'/ballas/ballas.gltf'} />
+			</Scene>
 		</Canvas>
 	</div>
 </div>
