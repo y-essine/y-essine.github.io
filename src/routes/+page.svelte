@@ -1,9 +1,10 @@
 <script lang="ts">
-	import Projects from '@components/projects/list.svelte';
+	import Menu from '@/components/menu/Menu.svelte';
 </script>
 
 <svelte:head>
 	<title>Home - YESSINE</title>
 </svelte:head>
-<h1>about me</h1>
-<!-- <Projects /> -->
+<div class="flex justify-center">
+	<Menu />
+</div>

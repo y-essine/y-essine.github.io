@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import Transition from './Transition.svelte';
-	import Spinner from '@components/ui/Spinner.svelte';
+	import Spinner from '@/components/ui/Spinner.svelte';
 
 	export let component: any;
 	export let fetched: boolean = false;

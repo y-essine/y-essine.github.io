@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { GLTF, useGltfAnimations } from '@threlte/extras';
 	import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-	import { setIsFetched } from '@shiba/store';
+	import { setIsFetched } from '@/shiba/store';
 	import { LoopRepeat } from 'three';
 
 	export let modelURL: string;

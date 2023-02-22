@@ -1,5 +1,5 @@
 <script>
-	import Lazy from '@shared/Lazy.svelte';
+	import Lazy from '@/shared/Lazy.svelte';
 </script>
 
 <svelte:head>

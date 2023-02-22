@@ -3,11 +3,7 @@
 	"compilerOptions": {
 		"baseUrl": ".",
 		"paths": {
-			"@shared/*": ["src/lib/shared/*"],
-			"@components/*": ["src/lib/components/*"],
-			"@assets/*": ["src/lib/assets/*"],
-			"@shiba/*": ["src/lib/shiba/*"],
-			"@audio/*": ["src/lib/audio/*"]
+			"@/*": ["src/lib/*"]
 		},
 		"allowJs": true,
 		"checkJs": true,

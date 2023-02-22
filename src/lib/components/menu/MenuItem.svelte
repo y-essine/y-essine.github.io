@@ -1,7 +1,6 @@
 <script lang="ts">
-	import { updatePageIndex } from '@shared/store';
-	import { createEventDispatcher } from 'svelte';
-	import { playTrack } from '@audio/store';
+	import { updatePageIndex } from '@/shared/store';
+	import { playTrack } from '@/audio/store';
 
 	type Item = {
 		handle: string;
@@ -40,10 +39,10 @@
 	on:mouseleave={toggleLeave}
 	on:click={() => playTrack('click')}
 >
-	<div class="mr-2 rotate-180 translate-y-1">
+	<div class="pr-3 translate-y-4 scale-x-150 scale-y-[2.3]">
 		<span class="block w-6" class:arrow={showArrow}>&nbsp;</span>
 	</div>
-	<span class="text-3xl font-bank">{item.name}</span>
+	<h3 class="text-3xl font-bank">{item.name}</h3>
 </a>
 
 <style>

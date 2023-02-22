@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition';
 	import { page } from '$app/stores';
-	import { isRight } from '@shared/store';
+	import { isRight } from '@/shared/store';
 
 	type Transition = {
 		type: 'page' | 'component';

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Spinner from '@components/ui/Spinner.svelte';
+	import Spinner from '@/components/ui/Spinner.svelte';
 	import Transition from './Transition.svelte';
 
 	export let component: any;

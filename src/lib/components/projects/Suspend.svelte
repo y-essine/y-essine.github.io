@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createSuspense, SuspenseList } from '@svelte-drama/suspense';
 	const suspend = createSuspense();
-	import Spinner from '@components/ui/Spinner.svelte';
+	import Spinner from '@/components/ui/Spinner.svelte';
 	export let component;
 
 	const loadComponent = component().then((m: any) => m.default);

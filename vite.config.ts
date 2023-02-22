@@ -9,11 +9,7 @@ const config: UserConfig = {
 	},
 	resolve: {
 		alias: {
-			'@shared': path.resolve('./src/lib/shared'),
-			'@components': path.resolve('./src/lib/components'),
-			'@assets': path.resolve('./src/assets'),
-			'@shiba': path.resolve('./src/lib/shiba'),
-			'@audio': path.resolve('./src/lib/audio')
+			'@': path.resolve('./src/lib')
 		}
 	},
 	ssr: {
