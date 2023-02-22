@@ -12,7 +12,8 @@ const config: UserConfig = {
 			'@shared': path.resolve('./src/lib/shared'),
 			'@components': path.resolve('./src/lib/components'),
 			'@assets': path.resolve('./src/assets'),
-			'@shiba': path.resolve('./src/lib/shiba')
+			'@shiba': path.resolve('./src/lib/shiba'),
+			'@audio': path.resolve('./src/lib/audio')
 		}
 	},
 	ssr: {

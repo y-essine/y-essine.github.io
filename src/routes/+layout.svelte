@@ -2,14 +2,19 @@
 	// import '@fontsource/inter';
 	import '../app.less';
 	import { fetchStatus } from '@shiba/store';
-	import Navbar from '@components/ui/navbar/Navbar.svelte';
+	import Navbar from '@components/navbar/Navbar.svelte';
 	import Transition from '@shared/Transition.svelte';
 	import LazyF from '@shared/LazyFetched.svelte';
 	const Shiba = () => import('@shiba/Shiba.svelte');
+
+	import Menu from '@components/menu/Menu.svelte';
+	import MuteButton from '@audio/MuteButton.svelte';
 </script>
 
 <Navbar />
-<div class="flex flex-col items-center">
+<div class="flex">
+	<Menu />
+
 	<div class="h-64">
 		<LazyF component={Shiba} fetched={$fetchStatus} />
 	</div>
@@ -20,4 +25,8 @@
 			</div>
 		</Transition>
 	</div>
+</div>
+
+<div class="fixed bottom-5 right-3">
+	<MuteButton />
 </div>
