@@ -6,8 +6,6 @@
 	<title>Projects - YESSINE</title>
 </svelte:head>
 <div>
-	<div class="flex justify-center">
-		<h1 class="font-bold text-3xl text-center">Projects I've worked on</h1>
-	</div>
+	<h1>relevant projects</h1>
 	<!-- <Lazy component={() => import('@components/projects/Project.svelte')} /> -->
 </div>

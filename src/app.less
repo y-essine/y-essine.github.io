@@ -5,8 +5,14 @@
 // @import url('@fontsource/inter');
 @layer base {
 	:root {
+		--mouse: url('/mouse.png'), auto;
 		font-family: 'Inter', sans-serif;
-		@apply min-h-full bg-zinc-900 text-xl text-zinc-300;
+		@apply min-h-full bg-black text-xl text-t-pri;
+		cursor: var(--mouse);
+
+		a {
+			cursor: var(--mouse) !important;
+		}
 	}
 
 	body {
@@ -26,6 +32,6 @@
 	h1,
 	h2,
 	h3 {
-		@apply font-bold font-mplus;
+		@apply text-3xl font-bank;
 	}
 }

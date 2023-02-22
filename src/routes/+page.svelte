@@ -5,5 +5,5 @@
 <svelte:head>
 	<title>Home - YESSINE</title>
 </svelte:head>
-<h3 class="font-bold text-3xl font-mplus">About me</h3>
+<h1>about me</h1>
 <!-- <Projects /> -->

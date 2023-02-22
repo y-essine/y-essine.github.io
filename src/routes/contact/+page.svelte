@@ -3,6 +3,6 @@
 </svelte:head>
 <div>
 	<div class="flex justify-center">
-		<h1 class="font-bold text-3xl">Contact</h1>
+		<h1>contact</h1>
 	</div>
 </div>

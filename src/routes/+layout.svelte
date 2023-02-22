@@ -1,12 +1,10 @@
 <script lang="ts">
 	// import '@fontsource/inter';
 	import '../app.less';
-
+	import { fetchStatus } from '@shiba/store';
 	import Navbar from '@components/ui/navbar/Navbar.svelte';
 	import Transition from '@shared/Transition.svelte';
 	import LazyF from '@shared/LazyFetched.svelte';
-	import { fetchStatus } from '@shiba/store';
-	import { currentPage } from '@shared/store';
 	const Shiba = () => import('@shiba/Shiba.svelte');
 </script>
 

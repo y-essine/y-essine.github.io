@@ -1,9 +1,8 @@
 <script lang="ts">
-	import { Object3DInstance } from '@threlte/core';
 	import { GLTF, useGltfAnimations } from '@threlte/extras';
 	import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 	import { setIsFetched } from '@shiba/store';
-	import { AnimationMixer } from 'three';
+	import { LoopRepeat } from 'three';
 
 	export let modelURL: string;
 
@@ -12,17 +11,15 @@
 		return loader.loadAsync(modelURL);
 	}
 
-	let _gltf = null;
-
 	const loadGLTF = loader().then((r) => {
 		setIsFetched(true);
-		_gltf = r;
 		return r;
 	});
 
-	const { gltf } = useGltfAnimations<'ballas1_Armature'>(({ actions }) => {
-		console.log(actions);
-		actions['ballas1_Armature']?.play();
+	const { gltf } = useGltfAnimations(({ actions }) => {
+		Object.keys(actions).forEach((key) => {
+			actions[key]?.play();
+		});
 	});
 </script>
 

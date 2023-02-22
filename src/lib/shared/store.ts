@@ -2,7 +2,7 @@ import { writable, get } from 'svelte/store';
 
 const _links = [
 	{
-		name: '@y-essine',
+		name: 'yessine',
 		href: '/',
 		handle: 'home'
 	},

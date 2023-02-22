@@ -21,7 +21,7 @@
 			scale.set({ val: scaleVal });
 		}}
 		step="0.01"
-		class="w-full h-2 bg-white/20 rounded-lg appearance-none cursor-pointer"
+		class="w-full h-2 bg-white/20 rounded-lg appearance-none"
 	/>
 	<label for="steps-range" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
 		>Rotation: {Math.trunc((rotationVal / 6.28) * 360)}
@@ -36,6 +36,6 @@
 			rotation.set({ x: 0, y: rotationVal });
 		}}
 		step="0.01"
-		class="w-full h-2 bg-white/20 rounded-lg appearance-none cursor-pointer"
+		class="w-full h-2 bg-white/20 rounded-lg appearance-none"
 	/>
 </div>

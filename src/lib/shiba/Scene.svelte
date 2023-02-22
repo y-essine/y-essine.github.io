@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { T, OrbitControls } from '@threlte/core';
-	import { Float } from '@threlte/extras';
 	import { degToRad } from 'three/src/math/MathUtils';
 
 	export let scale = 2;
@@ -12,7 +11,7 @@
 </T.OrthographicCamera>
 
 <T.Group {scale} rotation.y={rotation}>
-	<T.Mesh position={[0, 0, 0]} rotation={[0, degToRad(180), 0]}>
+	<T.Mesh position={[0, 0, 0]}>
 		<slot />
 	</T.Mesh>
 </T.Group>
