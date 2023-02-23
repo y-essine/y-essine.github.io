@@ -27,12 +27,12 @@ export const isRight = writable(true);
 export const isLeft = writable(false);
 
 export const updatePageIndex = (index: number) => {
-	// if (index > get(pageIndex)) setIsRight();
-	// else setIsLeft();
-	// console.log(index);
-	// pageIndex.set(index);
-	// currentPage.set(_links[index].handle);
-	// console.log(get(currentPage));
+	if (index > get(pageIndex)) setIsRight();
+	else setIsLeft();
+	console.log(index);
+	pageIndex.set(index);
+	currentPage.set(_links[index].handle);
+	console.log(get(currentPage));
 };
 
 const setIsRight = () => {
