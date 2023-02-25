@@ -1,24 +1,21 @@
 <script lang="ts">
 	import { fly } from 'svelte/transition';
 	import { page } from '$app/stores';
-	import { isRight } from '@/shared/store';
 
 	type Transition = {
 		type: 'page' | 'component';
 		duration?: number;
 		delay?: number;
-		left?: boolean;
-		right?: boolean;
 	};
 
-	export let transition: Transition = { type: 'page', left: true };
+	export let transition: Transition = { type: 'page' };
 </script>
 
 {#if transition.type === 'page'}
 	{#key $page.url.pathname}
 		<div
 			in:fly={{
-				x: $isRight ? 20 : -20,
+				x: -20,
 				duration: transition.duration || 250,
 				delay: transition.delay || 0
 			}}
