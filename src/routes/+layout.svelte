@@ -8,7 +8,7 @@
 	import MuteButton from '@/audio/MuteButton.svelte';
 </script>
 
-<div class="relative h-screen blur-[.4px] w-[75%] m-auto">
+<div class="relative h-screen blur-[.4px] w-[75%] m-auto scale-x-[1.33]">
 	<Navbar />
 
 	<div class="p-16 pl-[10%] w-full ">
@@ -18,7 +18,7 @@
 	</div>
 
 	{#if true}
-		<div class="absolute bottom-12 right-10">
+		<div class="absolute bottom-12 right-[12%]">
 			<MenuItem item={{ name: 'back', href: '/', handle: 'home' }} />
 		</div>
 	{/if}
