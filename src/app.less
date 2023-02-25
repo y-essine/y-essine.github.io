@@ -5,12 +5,19 @@
 // @import url('@fontsource/inter');
 @layer base {
 	:root {
+		--mouse: url('/hud/mouse.png'), auto;
 		font-family: 'Inter', sans-serif;
-		@apply min-h-full bg-zinc-900 text-zinc-300 text-xl;
+		@apply min-h-full bg-black text-xl text-t-pri;
+		cursor: var(--mouse);
+
+		a,
+		button {
+			cursor: var(--mouse) !important;
+		}
 	}
 
 	body {
-		@apply h-full m-0;
+		@apply h-full m-0 overflow-x-hidden;
 	}
 
 	::-webkit-scrollbar {
@@ -21,5 +28,11 @@
 	}
 	::-webkit-scrollbar-thumb {
 		@apply bg-zinc-700/50;
+	}
+
+	h1,
+	h2,
+	h3 {
+		@apply text-3xl font-bank h-fit w-fit;
 	}
 }

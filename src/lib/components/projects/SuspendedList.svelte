@@ -1,10 +1,10 @@
 <script>
 	import { createSuspense, SuspenseList } from '@svelte-drama/suspense';
 	const suspend = createSuspense();
-	import Spinner from '@components/ui/Spinner.svelte';
+	import Spinner from '@/components/ui/Spinner.svelte';
 	export let component;
 
-	const Project = import('@components/projects/Project.svelte').then((m) => m.default);
+	const Project = import('@/components/projects/Project.svelte').then((m) => m.default);
 </script>
 
 <SuspenseList collapse final let:loading on:error={(e) => console.error(e.detail)}>
