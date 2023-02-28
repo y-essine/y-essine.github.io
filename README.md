@@ -4,6 +4,7 @@ __Currently redesigning it to gta san andreas theme__
 
 
 This project serves as my own portfolio, built using Svelte/SvelteKit and will be deployed soon to https://yessine.dev
+now it's just an empty plain html page
 
 ## Setup
 You just have to install the dependencies
