@@ -1,7 +1,5 @@
 <script lang="ts">
 	import { T, OrbitControls } from '@threlte/core';
-	import { degToRad } from 'three/src/math/MathUtils';
-
 	export let scale = 2;
 	export let rotation = 0;
 </script>
