@@ -6,10 +6,10 @@
 </script>
 
 <div>
-	<div class="flex">
+	<div class="">
+		<slot />
 		<div class="w-64 h-64">
 			<LazyF component={Model} fetched={$fetchStatus} />
 		</div>
-		<slot />
 	</div>
 </div>

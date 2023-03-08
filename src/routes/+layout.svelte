@@ -18,7 +18,10 @@
 	</div>
 
 	{#if true}
-		<div class="absolute bottom-12 right-[12%]">
+		<!-- <div class="absolute bottom-12 right-[12%]">
+			<MenuItem item={{ name: 'back', href: '/', handle: 'home' }} />
+		</div> -->
+		<div class="absolute bottom-0 w-full h-24 pr-[13%] pb-16 flex justify-end">
 			<MenuItem item={{ name: 'back', href: '/', handle: 'home' }} />
 		</div>
 	{/if}
