@@ -1,0 +1,23 @@
+{
+  "spacing_scale": [],
+  "border_radius_scale": [
+    "4px",
+    "8px",
+    "12px",
+    "16px"
+  ],
+  "font_size_scale": [],
+  "key_measurements": {
+    "layout": {
+      "min-height": "100vh"
+    },
+    "spacing": {},
+    "borders": {},
+    "effects": {
+      "backdrop-filter": "blur(10px)",
+      "opacity": "0.001",
+      "transform": "translateY(-150px)"
+    },
+    "typography": {}
+  }
+}
