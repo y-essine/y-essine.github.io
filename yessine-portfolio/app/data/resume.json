@@ -1,0 +1,87 @@
+{
+  "name": "Yassine Karoui",
+  "about": {
+    "title": "À propos",
+    "items": [
+      "Product Engineer",
+      "Développeur Fullstack",
+      "3+ Ans d'éxperience",
+      "Ouvert Au Travail"
+    ],
+    "bio": "Quand je ne suis pas en train de coder, vous me trouverez en train de composer des beats, de jouer à des jeux vidéo ou de partager un bon repas avec des amis.",
+    "image": "/profile.jpg"
+  },
+  "competences": {
+    "title": "Compétences",
+    "skills": {
+      "title": "Skills",
+      "items": [
+        "Conception Produit",
+        "Architecture Frontend",
+        "Logique Backend",
+        "Design UI/UX"
+      ]
+    },
+    "outils": {
+      "title": "Outils",
+      "items": [
+        "VS Code",
+        "Git",
+        "Figma",
+        "Notion",
+        "Stripe API"
+      ]
+    },
+    "techStack": {
+      "title": "Tech Stack",
+      "items": [
+        "React",
+        "Next.js",
+        "Vue",
+        "Express",
+        "JavaScript / TypeScript",
+        "Python",
+        "SQL"
+      ]
+    },
+    "langues": {
+      "title": "Langues",
+      "items": [
+        "Français",
+        "Anglais"
+      ]
+    }
+  },
+  "experience": {
+    "title": "Expérience",
+    "jobs": [
+      {
+        "id": 1,
+        "title": "Product Engineer",
+        "company": "Indépendant",
+        "period": "2025 - Présent",
+        "location": "Télétravail",
+        "description": "At Lumina Tech I strengthened my foundation in algorithms, data structures, and software engineering.",
+        "isCurrent": true
+      },
+      {
+        "id": 2,
+        "title": "Lead Dev",
+        "company": "Redesk",
+        "period": "2023 - 2025",
+        "location": "Paris",
+        "description": "Supported front- and back-end development on client projects and internal tools, gaining hands-on coding experience in real-world environments.",
+        "isCurrent": false
+      },
+      {
+        "id": 3,
+        "title": "Fullstack Developer",
+        "company": "TechCorp",
+        "period": "2021 - 2023",
+        "location": "Remote",
+        "description": "Developed and maintained web applications using modern JavaScript frameworks.",
+        "isCurrent": false
+      }
+    ]
+  }
+}

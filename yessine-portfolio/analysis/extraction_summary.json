@@ -1,0 +1,13 @@
+{
+  "extraction_date": "auto-generated",
+  "source_file": "page.html",
+  "totals": {
+    "css_variables": 279,
+    "tokens": 8,
+    "rgb_colors": 14,
+    "rgba_colors": 10,
+    "font_sizes": 21,
+    "spacing_values": 55,
+    "box_shadows": 6
+  }
+}

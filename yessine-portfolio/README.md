@@ -1,73 +1,208 @@
-# React + TypeScript + Vite
+# Yassine Karoui - Resume Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A pixel-perfect recreation of a Framer resume website built with Next.js 16, TypeScript, and Tailwind CSS 4. All design tokens were extracted from the original Framer HTML for exact accuracy.
 
-Currently, two official plugins are available:
+## 🎨 Extraction & Design System
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+This project uses **279 CSS variables** and **exact design tokens** extracted from the original Framer HTML:
 
-## React Compiler
+- **Colors**: 8 unique tokens (`#141417` background, `#919191` muted, etc.)
+- **Typography**: 21 font sizes, Inter font family
+- **Spacing**: 55 unique spacing values
+- **Shadows**: 6 exact Framer box shadows
+- **460 inline styles** analyzed and categorized
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+See [IMPLEMENTATION_STATUS.md](./IMPLEMENTATION_STATUS.md) for complete extraction details.
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- 🎯 **Pixel-Perfect**: Exact colors and spacing from original Framer site
+- 🎨 **Dark Theme**: Professional dark mode design (#141417 background)
+- 📱 **Responsive**: Fully responsive layout that works on all devices
+- ⚡ **Next.js 16**: Built with the latest Next.js features and Turbopack
+- 🎯 **Type-Safe**: Written in TypeScript for better developer experience
+- 📊 **JSON Data**: All content stored in JSON for easy CMS migration
+- 🎭 **Inter Font**: Uses the Inter font family for clean typography
+- 🔍 **Extracted Tokens**: 279 CSS variables from original HTML
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Project Structure
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+yessine-portfolio/
+├── app/
+│   ├── components/          # Reusable UI components
+│   │   ├── Card.tsx        # Card component for sections
+│   │   ├── List.tsx        # List component for items
+│   │   ├── SectionTitle.tsx # Section title component
+│   │   └── WorkItem.tsx    # Work experience item component
+│   ├── data/
+│   │   └── resume.json     # All resume data (easily replaceable with CMS)
+│   ├── globals.css         # Global styles and CSS variables
+│   ├── layout.tsx          # Root layout with Inter font
+│   └── page.tsx            # Main resume page
+├── public/                  # Static assets
+├── package.json
+└── tsconfig.json
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Data Structure
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+The resume data is stored in `app/data/resume.json` with the following structure:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
+```json
+{
+  "name": "Your Name",
+  "about": {
+    "title": "À propos",
+    "items": [...],
+    "bio": "..."
   },
-])
+  "competences": {
+    "skills": {...},
+    "outils": {...},
+    "techStack": {...},
+    "langues": {...}
+  },
+  "experience": {
+    "jobs": [...]
+  }
+}
 ```
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 18+ installed
+- npm or yarn package manager
+
+### Installation
+
+1. Navigate to the project directory:
+```bash
+cd yessine-portfolio
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Run the development server:
+```bash
+npm run dev
+```
+
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+### Building for Production
+
+```bash
+npm run build
+npm start
+```
+
+## Customization
+
+### Updating Content
+
+Edit `app/data/resume.json` to update your:
+- Name and personal information
+- About section
+- Skills and competences
+- Work experience
+- Tools and tech stack
+- Languages
+
+### Styling
+
+The design uses CSS variables defined in `app/globals.css`:
+
+```css
+:root {
+  --background: #0a0a0a;    /* Background color */
+  --foreground: #ffffff;     /* Text color */
+  --border: #2b2b2b;        /* Border color */
+  --muted: #a4a4a4;         /* Muted text */
+  --accent: #42342b;        /* Accent background */
+  --accent-light: #d0a58b;  /* Accent text */
+}
+```
+
+### Components
+
+All components are modular and can be customized:
+
+- **Card**: Displays titled sections with borders
+- **List**: Renders lists with consistent styling
+- **SectionTitle**: Large section headers
+- **WorkItem**: Experience cards with icons and metadata
+
+## CMS Integration
+
+To integrate with a headless CMS:
+
+1. Replace the JSON import in `page.tsx` with an API call
+2. Use Next.js data fetching methods (`fetch`, `getServerSideProps`, etc.)
+3. Update the type definitions to match your CMS schema
+
+Example:
+```typescript
+// Instead of:
+import resumeData from "./data/resume.json";
+
+// Use:
+const resumeData = await fetch('your-cms-api/resume').then(r => r.json());
+```
+
+## Technologies Used
+
+- **Next.js 16** - React framework
+- **TypeScript** - Type safety
+- **Tailwind CSS** - Utility-first CSS
+- **Lucide React** - Icon library
+- **Inter Font** - Typography
+
+## License
+
+This project is based on the Jake dark mode resume template and customized for personal use.
+
+## Author
+
+Yassine Karoui - Product Engineer & Fullstack Developer
+
+
+## Getting Started
+
+First, run the development server:
+
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+
+## Learn More
+
+To learn more about Next.js, take a look at the following resources:
+
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

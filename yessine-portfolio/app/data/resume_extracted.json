@@ -1,0 +1,37 @@
+{
+  "name": "YassineKaroui",
+  "about": {
+    "title": "",
+    "items": [
+      "Product Engineer",
+      "Développeur Fullstack",
+      "3+ Ans d'éxperience",
+      "Ouvert Au Travail"
+    ],
+    "bio": "Quand je ne suis pas en train de coder, vous me trouverez en train de composer des beats, de jouer à\n                    des jeux vidéo ou de partager un bon repas avec des amis.",
+    "image": ""
+  },
+  "competences": {
+    "title": "",
+    "skills": {
+      "title": "",
+      "items": []
+    },
+    "outils": {
+      "title": "",
+      "items": []
+    },
+    "techStack": {
+      "title": "",
+      "items": []
+    },
+    "langues": {
+      "title": "",
+      "items": []
+    }
+  },
+  "experience": {
+    "title": "",
+    "jobs": []
+  }
+}

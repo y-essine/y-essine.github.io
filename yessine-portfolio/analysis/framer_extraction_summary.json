@@ -1,0 +1,20 @@
+{
+  "cdn_urls": {
+    "css": 0,
+    "js": 0,
+    "fonts": 43,
+    "images": 10
+  },
+  "inline_styles_count": 460,
+  "components_count": 1,
+  "framer_classes_by_category": {
+    "layout": 20,
+    "typography": 6,
+    "effects": 0,
+    "components": 188,
+    "states": 0
+  },
+  "css_files_analyzed": 0,
+  "total_css_variables": 0,
+  "total_css_classes": 0
+}
