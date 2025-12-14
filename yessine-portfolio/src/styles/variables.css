@@ -1,39 +1,35 @@
+/* Design Tokens - Extracted from Framer */
 :root {
-  /* Colors */
-  --color-text-primary: #ffffff;
-  --color-text-secondary: #888888;
-  --color-text-muted: #555555;
-  --color-bg: #1a1a1a;
-  --color-grid: rgba(255, 255, 255, 0.08);
-  
+  /* Color Tokens */
+  --color-text-secondary: #919191;
+  --color-border: #292929;
+  --color-accent: #d0a58b;
+  --color-accent-dark: #42342b;
+  --color-dark-gray: #2e2e2e;
+  --color-bg-primary: #141417;
+  --color-bg-secondary: #19191a;
+  --color-text-primary: #fff;
+  --color-black: #000;
+
   /* Typography */
-  --font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-size-xs: 0.875rem;
-  --font-size-sm: 0.9375rem;
-  --font-size-base: 1rem;
-  --font-size-lg: 1.125rem;
-  --font-size-xl: 1.5rem;
-  --font-size-2xl: 2rem;
-  --font-size-3xl: 3rem;
-  --font-size-4xl: 4rem;
-  --font-size-hero: clamp(3rem, 8vw, 5rem);
-  
-  /* Layout */
-  --max-width: 720px;
-  --header-height: 64px;
-  
+  --font-family: "Inter", "Inter Placeholder", sans-serif;
+
+  /* Breakpoints */
+  --breakpoint-mobile: 809.98px;
+  --breakpoint-tablet: 810px;
+  --breakpoint-tablet-max: 1199.98px;
+  --breakpoint-desktop: 1200px;
+
   /* Spacing */
-  --spacing-xs: 0.5rem;
-  --spacing-sm: 1rem;
-  --spacing-md: 1.5rem;
-  --spacing-lg: 2rem;
-  --spacing-xl: 3rem;
-  --spacing-2xl: 4rem;
-  --spacing-3xl: 6rem;
-  --spacing-4xl: 8rem;
-  
-  /* Line Heights */
-  --line-height-tight: 1.1;
-  --line-height-normal: 1.5;
-  --line-height-relaxed: 1.7;
+  --spacing-xs: 8px;
+  --spacing-sm: 16px;
+  --spacing-md: 24px;
+  --spacing-lg: 36px;
+  --spacing-xl: 48px;
+  --spacing-2xl: 72px;
+
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
 }

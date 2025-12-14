@@ -1,40 +1,55 @@
 .contact {
-  padding: var(--spacing-4xl) var(--spacing-lg) var(--spacing-3xl);
+  padding: var(--spacing-2xl) var(--spacing-lg) var(--spacing-xl);
 }
 
 .contact__container {
-  max-width: var(--max-width);
+  max-width: 1200px;
   margin: 0 auto;
-  text-align: center;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: var(--spacing-2xl);
+  align-items: start;
+}
+
+.contact__left {
+  position: sticky;
+  top: 120px;
 }
 
 .contact__title {
-  font-size: var(--font-size-xs);
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--color-text-muted);
-  margin-bottom: var(--spacing-2xl);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: left;
+  color: var(--color-text-primary);
+}
+
+.contact__right {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  max-width: 600px;
 }
 
 .contact__description {
-  font-size: var(--font-size-base);
-  line-height: var(--line-height-relaxed);
+  font-size: 15px;
+  line-height: 1.6;
   color: var(--color-text-secondary);
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: var(--spacing-md);
 }
 
 .contact__links {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-sm);
-  align-items: center;
+  gap: 4px;
 }
 
 .contact__link {
-  font-size: var(--font-size-base);
+  display: inline-block;
+  font-size: 15px;
   color: var(--color-text-secondary);
-  padding: var(--spacing-xs) 0;
+  transition: color 0.2s ease;
+  padding: 2px 0;
 }
 
 .contact__link:hover {
@@ -42,17 +57,31 @@
 }
 
 .contact__link-label {
-  display: inline;
-  margin-right: var(--spacing-xs);
+  color: var(--color-text-secondary);
 }
 
 .contact__link-value {
-  display: inline;
   color: var(--color-text-primary);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1199.98px) {
+  .contact__container {
+    grid-template-columns: 160px 1fr;
+    gap: var(--spacing-xl);
+  }
+}
+
+@media (max-width: 809.98px) {
   .contact {
-    padding: var(--spacing-3xl) var(--spacing-md) var(--spacing-2xl);
+    padding: var(--spacing-xl) var(--spacing-md);
+  }
+
+  .contact__container {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+
+  .contact__left {
+    position: static;
   }
 }
