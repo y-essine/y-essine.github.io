@@ -1,4 +1,0 @@
-{
-	// sveltekit extension pack
-	"recommendations": ["1yib.svelte-bundle", "esbenp.prettier-vscode", "bradlc.vscode-tailwindcss"]
-}
