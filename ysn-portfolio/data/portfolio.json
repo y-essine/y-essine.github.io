@@ -10,7 +10,7 @@
       "proficiencies": "Competences",
       "experience": "Experience",
       "education": "Formation",
-      "projects": "Projets",
+      "projects": "Projets récents",
       "languages": "Langues"
     },
     "contact": {
@@ -33,7 +33,7 @@
       {
         "id": 3,
         "title": "Produit & Collaboration",
-        "description": "Figma, Jira, Notion, Miro, Trello, GitHub, Bitbucket, Playwright, UX iterations, production delivery."
+        "description": "Figma, Photoshop, Jira, Notion, Trello, GitHub, Bitbucket, Playwright, UX iterations, production delivery."
       }
     ],
     "experience": [
@@ -72,25 +72,44 @@
         "id": 1,
         "title": "CloudShare",
         "description": "Plateforme collaborative de partage de fichiers pour PME avec roles, versioning, annotations et notifications.",
-        "technologies": ["Vue", "Express", "Sequelize", "PostgreSQL"]
+        "technologies": [
+          "Vue",
+          "Express",
+          "Sequelize",
+          "PostgreSQL"
+        ]
       },
       {
         "id": 2,
         "title": "ClassConnect",
         "description": "Application de communication ecole-eleves-parents avec devoirs, emploi du temps et notifications.",
-        "technologies": ["React", "Node.js", "SQL"]
+        "technologies": [
+          "React",
+          "Node.js",
+          "SQL"
+        ]
       },
       {
         "id": 3,
         "title": "MailTrace",
         "description": "Extension email tracking pour ouvertures, clics et geolocalisation approximative (en cours).",
-        "technologies": ["JavaScript", "Chrome Extension APIs", "Node.js"]
+        "technologies": [
+          "JavaScript",
+          "Chrome Extension APIs",
+          "Node.js"
+        ]
       },
       {
         "id": 4,
         "title": "WEBDIST",
         "description": "Architecture backend microservices avec service discovery, gateway, auth et stockage multi-bases.",
-        "technologies": ["Spring Boot", "Node.js", "Docker", "Keycloak", "Eureka"]
+        "technologies": [
+          "Spring Boot",
+          "Node.js",
+          "Docker",
+          "Keycloak",
+          "Eureka"
+        ]
       }
     ],
     "languages": [
@@ -117,7 +136,7 @@
       "proficiencies": "Skills",
       "experience": "Experience",
       "education": "Education",
-      "projects": "Projects",
+      "projects": "Recent Projects",
       "languages": "Languages"
     },
     "contact": {
@@ -140,7 +159,7 @@
       {
         "id": 3,
         "title": "Product & Collaboration",
-        "description": "Figma, Jira, Notion, Miro, Trello, GitHub, Bitbucket, Playwright, UX iterations, production delivery."
+        "description": "Figma, Photoshop, Jira, Notion, Trello, GitHub, Bitbucket, Playwright, UX iterations, production delivery."
       }
     ],
     "experience": [
@@ -179,25 +198,44 @@
         "id": 1,
         "title": "CloudShare",
         "description": "Collaborative file-sharing platform for SMEs with roles, versioning, annotations, and notifications.",
-        "technologies": ["Vue", "Express", "Sequelize", "PostgreSQL"]
+        "technologies": [
+          "Vue",
+          "Express",
+          "Sequelize",
+          "PostgreSQL"
+        ]
       },
       {
         "id": 2,
         "title": "ClassConnect",
         "description": "School-parent-student communication app with assignments, schedules, and notifications.",
-        "technologies": ["React", "Node.js", "SQL"]
+        "technologies": [
+          "React",
+          "Node.js",
+          "SQL"
+        ]
       },
       {
         "id": 3,
         "title": "MailTrace",
         "description": "Email tracking extension for opens, clicks, and approximate geo insights (in progress).",
-        "technologies": ["JavaScript", "Chrome Extension APIs", "Node.js"]
+        "technologies": [
+          "JavaScript",
+          "Chrome Extension APIs",
+          "Node.js"
+        ]
       },
       {
         "id": 4,
         "title": "WEBDIST",
         "description": "Microservices backend architecture with service discovery, gateway, auth, and multi-database integration.",
-        "technologies": ["Spring Boot", "Node.js", "Docker", "Keycloak", "Eureka"]
+        "technologies": [
+          "Spring Boot",
+          "Node.js",
+          "Docker",
+          "Keycloak",
+          "Eureka"
+        ]
       }
     ],
     "languages": [

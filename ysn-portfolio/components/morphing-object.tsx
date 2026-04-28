@@ -26,6 +26,8 @@ const SECTION_STOPS = [
   { id: "experience", shape: 2 },
   { id: "education", shape: 3 },
   { id: "projects", shape: 1 },
+  { id: "languages", shape: 2 },
+  { id: "contact", shape: 3 },
 ] as const;
 
 interface ParticleState {
