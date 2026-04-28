@@ -181,7 +181,7 @@ export default function MorphingObject() {
       const titleRect = titleEl?.getBoundingClientRect();
       const isCompact = window.innerWidth < 1024;
       const left = isCompact
-        ? clamp(window.innerWidth - state.canvasSize - 10, 8, window.innerWidth)
+        ? clamp(window.innerWidth - state.canvasSize - 22, 8, window.innerWidth)
         : clamp(
             rect.left - state.canvasSize - 22,
             10,
@@ -193,7 +193,7 @@ export default function MorphingObject() {
       const compactTop = clamp(
         window.innerHeight - state.canvasSize - 14,
         TOP_SAFE_OFFSET,
-        window.innerHeight - state.canvasSize - 8
+        window.innerHeight - state.canvasSize - 20
       );
       const top = clamp(
         isCompact ? compactTop : titleAnchorTop,

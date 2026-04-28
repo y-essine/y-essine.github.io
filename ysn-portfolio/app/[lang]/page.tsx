@@ -91,7 +91,10 @@ export default async function LocalePage({
               };
               const logoSrc = logoMap[idx];
               return (
-                <div key={item.id} className="pb-6 border-b border-zinc-800">
+                <div
+                  key={item.id}
+                  className="group pb-6 border-b border-zinc-800"
+                >
                   <div className="mb-3 flex items-start gap-4 sm:justify-between">
                     <div className="flex items-start gap-4 flex-1 min-w-0">
                       {logoSrc && (
@@ -101,7 +104,7 @@ export default async function LocalePage({
                             alt={item.company}
                             width={56}
                             height={56}
-                            className="h-14 w-14 rounded-lg object-cover"
+                            className="h-14 w-14 rounded-lg object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
                           />
                         </div>
                       )}
@@ -140,7 +143,10 @@ export default async function LocalePage({
               };
               const logoSrc = logoMap[idx];
               return (
-                <div key={item.id} className="pb-6 border-b border-zinc-800">
+                <div
+                  key={item.id}
+                  className="group pb-6 border-b border-zinc-800"
+                >
                   <div className="mb-3 flex items-start gap-4 sm:justify-between">
                     <div className="flex items-start gap-4 flex-1 min-w-0">
                       {logoSrc && (
@@ -150,7 +156,7 @@ export default async function LocalePage({
                             alt={item.institution}
                             width={56}
                             height={56}
-                            className="h-14 w-14 rounded-lg object-cover"
+                            className="h-14 w-14 rounded-lg object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
                           />
                         </div>
                       )}
