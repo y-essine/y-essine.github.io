@@ -2,6 +2,8 @@ import { locales, type Locale } from "@/lib/i18n";
 import portfolioData from "@/data/portfolio.json";
 import Navbar from "@/components/navbar";
 import Image from "next/image";
+import Script from "next/script";
+import { type Metadata } from "next";
 import {
   Briefcase,
   GraduationCap,
@@ -14,11 +16,43 @@ import {
   Languages,
 } from "lucide-react";
 import HeroPicture from "@/components/hero-picture";
+import {
+  generateMetadata as generateSeoMetadata,
+  generateJsonLd,
+  BASE_URL,
+} from "@/lib/seo";
 
 type PortfolioData = typeof portfolioData;
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ lang: locale }));
+}
+
+type PageProps = {
+  params: Promise<{ lang: Locale }>;
+};
+
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { lang } = await params;
+  const data = portfolioData[lang] as PortfolioData[Locale];
+  const isEnglish = lang === "en";
+
+  return generateSeoMetadata({
+    title: `${data.hero.name} - ${data.hero.title}`,
+    description: data.hero.description,
+    keywords: [
+      "Product Engineer",
+      "Fullstack Developer",
+      "React",
+      "Node.js",
+      "TypeScript",
+      data.hero.name,
+    ],
+    url: `${BASE_URL}/${lang}`,
+    locale: isEnglish ? "en-US" : "fr-FR",
+  });
 }
 
 export default async function LocalePage({
@@ -31,6 +65,30 @@ export default async function LocalePage({
 
   return (
     <div className="min-h-screen overflow-x-clip bg-[#101011] text-foreground">
+      <Script
+        id="breadcrumb-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            generateJsonLd("BreadcrumbList", {
+              itemListElement: [
+                {
+                  "@type": "ListItem",
+                  position: 1,
+                  name: "Home",
+                  item: BASE_URL,
+                },
+                {
+                  "@type": "ListItem",
+                  position: 2,
+                  name: "Portfolio",
+                  item: `${BASE_URL}/${lang}`,
+                },
+              ],
+            })
+          ),
+        }}
+      />
       <Navbar currentLocale={lang} />
 
       <main className="mx-auto max-w-5xl px-5 pb-20 pt-24 sm:px-6 sm:pt-28 lg:px-20 lg:pt-32">

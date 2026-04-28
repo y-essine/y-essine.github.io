@@ -1,0 +1,52 @@
+{
+  "name": "Yassine Karoui - Product Engineer & Fullstack Builder",
+  "short_name": "Yassine Karoui",
+  "description": "Product Engineer & Fullstack Builder. I design and ship useful, fast, elegant web products from idea to production.",
+  "start_url": "/en",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#101011",
+  "background_color": "#101011",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon.png",
+      "sizes": "any",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/og-image.png",
+      "sizes": "1200x630",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ],
+  "categories": [
+    "business",
+    "technology"
+  ],
+  "shortcuts": [
+    {
+      "name": "View Portfolio",
+      "short_name": "Portfolio",
+      "description": "View my portfolio and projects",
+      "url": "/en",
+      "icons": [
+        {
+          "src": "/icon.png",
+          "sizes": "any",
+          "type": "image/png"
+        }
+      ]
+    }
+  ]
+}
