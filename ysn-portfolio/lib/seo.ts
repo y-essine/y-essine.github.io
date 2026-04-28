@@ -1,6 +1,6 @@
 import { type Metadata } from "next";
 
-export const BASE_URL = "https://yassine-karoui.com";
+export const BASE_URL = "https://yessine.dev";
 
 export interface SEOConfig {
   title: string;
@@ -91,7 +91,7 @@ export const personSchema = {
   url: BASE_URL,
   jobTitle: "Product Engineer & Fullstack Builder",
   image: `${BASE_URL}/pfp.jpg`,
-  sameAs: ["https://github.com/y-essine", "https://twitter.com/yassine_karoui"],
+  sameAs: ["https://github.com/y-essine", "https://linkedin.com/in/y-essine"],
   email: "yassine.karoui.x@gmail.com",
   location: {
     "@type": "Place",
