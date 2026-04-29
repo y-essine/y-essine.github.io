@@ -1,11 +1,13 @@
-export { type Point3D } from './types';
-export { N_POINTS } from './constants';
+export { type Point3D } from "./types";
+export { N_POINTS } from "./constants";
 
-import { N_POINTS } from './constants';
-import { CUBE_POINTS } from './cube';
-import { HEART_POINTS } from './heart';
-import { SPHERE_POINTS } from './sphere';
-import { TORUS_POINTS } from './torus';
+import { N_POINTS } from "./constants";
+import { CUBE_POINTS } from "./cube";
+import { HEART_POINTS } from "./heart";
+import { SPHERE_POINTS } from "./sphere";
+import { TORUS_POINTS } from "./torus";
+import { MAIL_POINTS } from "./mail";
+import { KANJI_POINTS } from "./kanji";
 
 // Array of all shapes
 export const ALL_SHAPES = [
@@ -13,16 +15,18 @@ export const ALL_SHAPES = [
   CUBE_POINTS,
   TORUS_POINTS,
   HEART_POINTS,
+  MAIL_POINTS,
+  KANJI_POINTS,
 ];
 
 export const POINTS_ARRAY = new Array(N_POINTS).fill(0);
 
 export const ALL_SHAPES_X = POINTS_ARRAY.map((_, pointIndex) =>
-  ALL_SHAPES.map(shape => shape[pointIndex].x),
+  ALL_SHAPES.map((shape) => shape[pointIndex].x)
 );
 export const ALL_SHAPES_Y = POINTS_ARRAY.map((_, pointIndex) =>
-  ALL_SHAPES.map(shape => shape[pointIndex].y),
+  ALL_SHAPES.map((shape) => shape[pointIndex].y)
 );
 export const ALL_SHAPES_Z = POINTS_ARRAY.map((_, pointIndex) =>
-  ALL_SHAPES.map(shape => shape[pointIndex].z),
+  ALL_SHAPES.map((shape) => shape[pointIndex].z)
 );
