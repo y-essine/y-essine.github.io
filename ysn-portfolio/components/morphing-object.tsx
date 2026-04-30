@@ -26,9 +26,12 @@ const SECTION_STOPS = [
   { id: "experience", shape: 2 },
   { id: "education", shape: 3 },
   { id: "projects", shape: 1 },
+  { id: "project-detail-hero", shape: 1 },
   { id: "languages", shape: 5 },
   { id: "contact", shape: 4 },
 ] as const;
+
+type SectionStop = (typeof SECTION_STOPS)[number];
 
 interface ParticleState {
   sx: Float32Array;
@@ -57,7 +60,7 @@ export default function MorphingObject() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const activeIndexRef = useRef(0);
-  const sectionElsRef = useRef<HTMLElement[]>([]);
+  const sectionElsRef = useRef<Array<{ el: HTMLElement; stop: SectionStop }>>([]);
   const pendingSectionIndexRef = useRef(0);
   const sectionChangeTimerRef = useRef<number | null>(null);
   const stateRef = useRef<ParticleState>({
@@ -113,9 +116,11 @@ export default function MorphingObject() {
 
     const morphToSection = (sectionIndex: number, now: number) => {
       if (sectionIndex === activeIndexRef.current) return;
+      const target = sectionElsRef.current[sectionIndex];
+      if (!target) return;
       activeIndexRef.current = sectionIndex;
       state.currentShapeFrom = state.currentShapeTo;
-      state.currentShapeTo = SECTION_STOPS[sectionIndex].shape;
+      state.currentShapeTo = target.stop.shape;
       state.morphStart = now;
       state.morphT = 0;
     };
@@ -144,9 +149,10 @@ export default function MorphingObject() {
     };
 
     const refreshSectionElements = () => {
-      sectionElsRef.current = SECTION_STOPS.map((stop) =>
-        document.getElementById(stop.id)
-      ).filter((el): el is HTMLElement => Boolean(el));
+      sectionElsRef.current = SECTION_STOPS.flatMap((stop) => {
+        const el = document.getElementById(stop.id);
+        return el ? [{ el, stop }] : [];
+      });
     };
 
     const findActiveSectionIndex = () => {
@@ -158,7 +164,7 @@ export default function MorphingObject() {
       let bestDistance = Number.POSITIVE_INFINITY;
 
       for (let i = 0; i < sections.length; i++) {
-        const rect = sections[i].getBoundingClientRect();
+        const rect = sections[i].el.getBoundingClientRect();
         const inside = probeY >= rect.top && probeY <= rect.bottom;
         if (inside) return i;
         const center = rect.top + rect.height / 2;
@@ -173,8 +179,10 @@ export default function MorphingObject() {
     };
 
     const positionWrapperAtSection = (sectionIndex: number) => {
-      const section = sectionElsRef.current[sectionIndex];
-      if (!section) return;
+      const target = sectionElsRef.current[sectionIndex];
+      if (!target) return;
+
+      const section = target.el;
 
       const rect = section.getBoundingClientRect();
       const titleEl = section.querySelector("h1, h2") as HTMLElement | null;

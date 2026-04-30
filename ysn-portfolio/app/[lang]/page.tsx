@@ -1,5 +1,4 @@
 import { locales, type Locale } from "@/lib/i18n";
-import portfolioData from "@/data/portfolio.json";
 import Navbar from "@/components/navbar";
 import Image from "next/image";
 import Script from "next/script";
@@ -16,13 +15,13 @@ import {
   Languages,
 } from "lucide-react";
 import HeroPicture from "@/components/hero-picture";
+import ProjectCard from "@/components/project-card";
 import {
   generateMetadata as generateSeoMetadata,
   generateJsonLd,
   BASE_URL,
 } from "@/lib/seo";
-
-type PortfolioData = typeof portfolioData;
+import { getPortfolioData } from "@/lib/portfolio";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ lang: locale }));
@@ -36,7 +35,7 @@ export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { lang } = await params;
-  const data = portfolioData[lang] as PortfolioData[Locale];
+  const data = getPortfolioData(lang);
   const isEnglish = lang === "en";
 
   return generateSeoMetadata({
@@ -61,7 +60,7 @@ export default async function LocalePage({
   params: Promise<{ lang: Locale }>;
 }) {
   const { lang } = await params;
-  const data = portfolioData[lang] as PortfolioData[Locale];
+  const data = getPortfolioData(lang);
 
   return (
     <div className="min-h-screen overflow-x-clip bg-[#101011] text-foreground">
@@ -156,13 +155,13 @@ export default async function LocalePage({
                   <div className="mb-3 flex items-start gap-4 sm:justify-between">
                     <div className="flex items-start gap-4 flex-1 min-w-0">
                       {logoSrc && (
-                        <div className="flex-shrink-0">
+                        <div className="shrink-0">
                           <Image
                             src={`/logos/${logoSrc}`}
                             alt={item.company}
                             width={56}
                             height={56}
-                            className="h-14 w-14 rounded-lg object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
+                            className="h-14 w-14 rounded-lg object-cover"
                           />
                         </div>
                       )}
@@ -175,7 +174,7 @@ export default async function LocalePage({
                         </p>
                       </div>
                     </div>
-                    <span className="text-xs text-zinc-400 sm:text-sm flex-shrink-0">
+                    <span className="text-xs text-zinc-400 sm:text-sm shrink-0">
                       {item.period}
                     </span>
                   </div>
@@ -208,13 +207,13 @@ export default async function LocalePage({
                   <div className="mb-3 flex items-start gap-4 sm:justify-between">
                     <div className="flex items-start gap-4 flex-1 min-w-0">
                       {logoSrc && (
-                        <div className="flex-shrink-0">
+                        <div className="shrink-0">
                           <Image
                             src={`/logos/${logoSrc}`}
                             alt={item.institution}
                             width={56}
                             height={56}
-                            className="h-14 w-14 rounded-lg object-cover grayscale group-hover:grayscale-0 transition-all duration-300"
+                            className="h-14 w-14 rounded-lg object-cover"
                           />
                         </div>
                       )}
@@ -246,22 +245,7 @@ export default async function LocalePage({
           <div className="space-y-6 lg:w-3/4 lg:space-y-8">
             {data.projects.map((item) => (
               <div key={item.id} className="group">
-                <div className="rounded-lg bg-zinc-900/50 p-4 transition-colors hover:bg-zinc-900 sm:p-6">
-                  <h3 className="mb-2 text-base sm:text-lg">{item.title}</h3>
-                  <p className="mb-4 text-sm text-zinc-400 sm:text-base">
-                    {item.description}
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {item.technologies.map((tech, idx) => (
-                      <span
-                        key={idx}
-                        className="px-3 py-1 text-xs rounded-full bg-zinc-800 text-zinc-500"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+                <ProjectCard lang={lang} project={item} />
               </div>
             ))}
           </div>

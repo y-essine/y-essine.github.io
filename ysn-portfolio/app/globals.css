@@ -11,6 +11,21 @@
   --font-sans: "Inter", system-ui, sans-serif;
 }
 
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 220ms;
+}
+
+::view-transition-old(*),
+::view-transition-new(*) {
+  animation-duration: 260ms;
+  animation-timing-function: ease;
+}
+
 
 body {
   background: var(--background);

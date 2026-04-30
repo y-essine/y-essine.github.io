@@ -10,7 +10,7 @@
       "proficiencies": "Competences",
       "experience": "Experience",
       "education": "Formation",
-      "projects": "Projets récents",
+      "projects": "Projets rÃ©cents",
       "languages": "Langues"
     },
     "contact": {
@@ -46,7 +46,7 @@
       },
       {
         "id": 2,
-        "title": "Developpeur Fullstack",
+        "title": "Developpeur Lead",
         "company": "Redesk (CDD) - Paris, France",
         "period": "Dec 2023 - Jan 2025",
         "description": "Creation d'une PWA d'inventaire en Nuxt/Vue et Django/Python, mode offline avec synchronisation, tests E2E Playwright, cache Redis et file de requetes backend."
@@ -69,46 +69,141 @@
     ],
     "projects": [
       {
-        "id": 1,
-        "title": "CloudShare",
-        "description": "Plateforme collaborative de partage de fichiers pour PME avec roles, versioning, annotations et notifications.",
+        "id": 5,
+        "title": "Meme Paper",
+        "slug": "meme-paper",
+        "description": "Extension Chrome pour le trading simulÃ© de memecoins sur Solana avec donnÃ©es de marchÃ© en temps rÃ©el.",
+        "longDescription": "Meme Paper est une extension Chrome spÃ©cialisÃ©e conÃ§ue pour la simulation de trading haute frÃ©quence dans l'Ã©cosystÃ¨me Solana. Elle permet aux utilisateurs de simuler en temps rÃ©el le trading de memecoins, offrant un environnement sans risque pour tester des stratÃ©gies sur des plateformes comme Axiom.trade avant d'engager du capital rÃ©el.",
         "technologies": [
-          "Vue",
-          "Express",
-          "Sequelize",
-          "PostgreSQL"
+          "Chrome Extension APIs",
+          "JavaScript",
+          "React",
+          "Solana RPC",
+          "Real-time Data",
+          "UI Overlay"
+        ],
+        "achievements": [
+          "IntÃ©gration de donnÃ©es de marchÃ© Solana en direct pour des simulations de prix prÃ©cises",
+          "Interface utilisateur overlay transparente qui s'intÃ¨gre aux plateformes de trading existantes",
+          "Optimisation pour les mises Ã  jour faible latence, reflÃ©tant la nature rapide du marchÃ© des memecoins Solana",
+          "Lancement rÃ©ussi sur le Chrome Web Store pour valider les stratÃ©gies sans risque financier",
+          "Support pour les interfaces de trading Solana populaires, comblant un manque de marchÃ©"
+        ],
+        "keyHighlights": [
+          "Outil de rÃ©duction des risques pour traders",
+          "Support complet de l'Ã©cosystÃ¨me Solana",
+          "ExÃ©cution simulÃ©e haute frÃ©quence",
+          "UX native sur les plateformes de trading"
         ]
       },
       {
-        "id": 2,
-        "title": "ClassConnect",
-        "description": "Application de communication ecole-eleves-parents avec devoirs, emploi du temps et notifications.",
+        "id": 6,
+        "title": "fomo.app",
+        "slug": "fomo-app",
+        "description": "Application mobile-first d'intelligence de trading crypto pour suivre les trades en direct, la performance des traders et l'activite des tokens.",
+        "longDescription": "fomo.app est un client d'analytics crypto base sur Vue, pense pour les traders qui veulent suivre l'activite du marche et decouvrir des wallets a fort signal. Il combine un acces authentifie avec des feeds de type social, des leaderboards, des analytics de profils et des vues detaillees sur les tokens qui mettent en avant holders, graphiques, alertes et historique de trades. L'application est distribuee comme PWA installable et integre du live polling, des notifications push et des proxys API/auth personnalises pour la production.",
         "technologies": [
-          "React",
-          "Node.js",
-          "SQL"
+          "Vue 3",
+          "TypeScript",
+          "Vite",
+          "Pinia",
+          "Vue Router",
+          "Tailwind CSS",
+          "Axios",
+          "lightweight-charts",
+          "Privy Auth",
+          "Vite PWA",
+          "Vercel Serverless Functions",
+          "Veaury"
+        ],
+        "achievements": [
+          "Creation d'un dashboard de trading authentifie avec gestion de session via Privy et rafraichissement automatique du token.",
+          "Implementation de plusieurs modes de feed, incluant toute l'activite, les amis, le smart money et des vues avec polling en direct.",
+          "Conception d'experiences leaderboard avec filtres PnL, signaux de copy-score et analyse des recouvrements de portefeuilles.",
+          "Developpement de vues detaillees de tokens avec graphiques de prix live, repartition des holders, historique des trades et panneaux d'intelligence token.",
+          "Ajout d'analytics de profil pour les holdings, les trades actifs et fermes, les snapshots de portefeuille et les insights d'auto-analyse.",
+          "Livraison de l'application comme PWA installable avec notifications live via service worker et proxys API de production."
+        ],
+        "keyHighlights": [
+          "Intelligence crypto en temps reel",
+          "Feeds amis et smart-money",
+          "Decouverte de traders via leaderboard",
+          "Analytics token et graphiques detailles",
+          "PWA installable avec alertes push",
+          "Experience mobile-first authentifiee"
         ]
       },
       {
         "id": 3,
         "title": "MailTrace",
+        "slug": "mailtrace",
         "description": "Extension email tracking pour ouvertures, clics et geolocalisation approximative (en cours).",
+        "longDescription": "MailTrace est une extension de suivi d'emails en dÃ©veloppement qui fournit des insights dÃ©taillÃ©s sur les interactions avec les emails. Elle suivit les ouvertures, les clics, la gÃ©olocalisation approximative et d'autres mÃ©triques d'engagement pour aider les professionnels Ã  mieux comprendre l'impact de leurs communications.",
         "technologies": [
           "JavaScript",
           "Chrome Extension APIs",
           "Node.js"
+        ],
+        "achievements": [
+          "Suivi d'ouvertures d'emails en temps rÃ©el",
+          "DÃ©tection des clics avec suivi d'URL",
+          "GÃ©olocalisation approximative des destinataires",
+          "Architecture lÃ©gÃ¨re et non-intrusive"
+        ],
+        "keyHighlights": [
+          "Insights d'engagement email",
+          "Suivi non-intrusif",
+          "MÃ©triques dÃ©taillÃ©es",
+          "Performance optimisÃ©e"
         ]
       },
       {
-        "id": 4,
-        "title": "WEBDIST",
-        "description": "Architecture backend microservices avec service discovery, gateway, auth et stockage multi-bases.",
+        "id": 1,
+        "title": "CloudShare",
+        "slug": "cloudshare",
+        "description": "Plateforme collaborative de partage de fichiers pour PME avec roles, versioning, annotations et notifications.",
+        "longDescription": "CloudShare est une plateforme collaborative de partage de fichiers construite pour les PME. Elle offre un contrÃ´le granulaire des rÃ´les et permissions, le versioning des fichiers, les annotations collaboratives et les notifications en temps rÃ©el pour faciliter la collaboration d'Ã©quipe.",
         "technologies": [
-          "Spring Boot",
+          "Vue",
+          "Express",
+          "Sequelize",
+          "PostgreSQL"
+        ],
+        "achievements": [
+          "SystÃ¨me de rÃ´les et permissions granulaire",
+          "Historique complet des versions avec possibilitÃ© de restauration",
+          "Annotations collaboratives en temps rÃ©el",
+          "SystÃ¨me de notifications intelligent"
+        ],
+        "keyHighlights": [
+          "Collaboration d'Ã©quipe simplifiÃ©e",
+          "Gestion de versions robuste",
+          "ContrÃ´le d'accÃ¨s flexible",
+          "Interface utilisateur intuitive"
+        ]
+      },
+      {
+        "id": 2,
+        "title": "ClassConnect",
+        "slug": "classconnect",
+        "description": "Application de communication ecole-eleves-parents avec devoirs, emploi du temps et notifications.",
+        "longDescription": "ClassConnect connecte les Ã©coles, les Ã©lÃ¨ves et les parents avec une plateforme de communication centralisÃ©e. Elle permet le partage des devoirs, l'affichage de l'emploi du temps, les mises Ã  jour en temps rÃ©el et une collaboration transparente entre tous les acteurs de l'Ã©ducation.",
+        "technologies": [
+          "React",
           "Node.js",
-          "Docker",
-          "Keycloak",
-          "Eureka"
+          "SQL"
+        ],
+        "achievements": [
+          "Plateforme de communication unifiÃ©e pour l'Ã©cosystÃ¨me scolaire",
+          "Gestion centralisÃ©e des devoirs et de l'emploi du temps",
+          "Notifications intelligentes pour les acteurs clÃ©s",
+          "Interface adaptÃ©e pour Ã©lÃ¨ves, parents et enseignants"
+        ],
+        "keyHighlights": [
+          "Communication transparente",
+          "Gestion scolaire intÃ©grÃ©e",
+          "Engagement des parents",
+          "Support multi-rÃ´les"
         ]
       }
     ],
@@ -172,7 +267,7 @@
       },
       {
         "id": 2,
-        "title": "Fullstack Developer",
+        "title": "Lead Developer",
         "company": "Redesk (Contract) - Paris, France",
         "period": "Dec 2023 - Jan 2025",
         "description": "Delivered an inventory PWA with Nuxt/Vue and Django/Python, offline sync workflows, Playwright E2E coverage, and Redis-backed backend performance improvements."
@@ -195,46 +290,142 @@
     ],
     "projects": [
       {
-        "id": 1,
-        "title": "CloudShare",
-        "description": "Collaborative file-sharing platform for SMEs with roles, versioning, annotations, and notifications.",
+        "id": 5,
+        "title": "Meme Paper",
+        "slug": "meme-paper",
+        "description": "Chrome extension for simulated memecoin trading on Solana with real-time market data.",
+        "longDescription": "Meme Paper is a specialized Chrome extension designed for high-frequency paper trading simulation in the Solana ecosystem. It enables users to simulate real-time memecoin trading, providing a risk-free environment to test strategies on platforms like Axiom.trade before committing actual capital.",
         "technologies": [
-          "Vue",
-          "Express",
-          "Sequelize",
-          "PostgreSQL"
+          "Chrome Extension APIs",
+          "JavaScript",
+          "React",
+          "Solana RPC",
+          "Real-time Data",
+          "UI Overlay"
+        ],
+        "achievements": [
+          "Engineered browser extension interfacing with live Solana market data for accurate price simulations",
+          "Developed seamless overlay UI integrating directly into existing trading platforms for native-feeling experience",
+          "Optimized for low-latency updates, ensuring simulated entry and exit points mirror fast-paced memecoin markets",
+          "Successfully launched on Chrome Web Store as risk mitigation tool for strategy validation",
+          "Designed specifically for popular Solana trading interfaces, filling market gap for simulation tools"
+        ],
+        "keyHighlights": [
+          "Risk Mitigation Tool",
+          "Real-Time Data Integration",
+          "Native-Feeling UX",
+          "Low-Latency Performance",
+          "Solana Ecosystem Focus"
         ]
       },
       {
-        "id": 2,
-        "title": "ClassConnect",
-        "description": "School-parent-student communication app with assignments, schedules, and notifications.",
+        "id": 6,
+        "title": "fomo.app",
+        "slug": "fomo-app",
+        "description": "A mobile-first crypto trading intelligence app for tracking live trades, trader performance, and token activity.",
+        "longDescription": "fomo.app is a Vue-based crypto analytics client built for traders who want to follow market activity and discover high-signal wallets. It combines authenticated access with social-style feeds, leaderboards, profile analytics, and token drill-down views that surface holders, charts, warnings, and trade history. The app is packaged as an installable PWA and includes live polling, push notifications, and custom API/auth proxying to support the production deployment.",
         "technologies": [
-          "React",
-          "Node.js",
-          "SQL"
+          "Vue 3",
+          "TypeScript",
+          "Vite",
+          "Pinia",
+          "Vue Router",
+          "Tailwind CSS",
+          "Axios",
+          "lightweight-charts",
+          "Privy Auth",
+          "Vite PWA",
+          "Vercel Serverless Functions",
+          "Veaury"
+        ],
+        "achievements": [
+          "Built an authenticated trading dashboard with Privy-backed session handling and automatic token refresh.",
+          "Implemented multiple feed modes, including all activity, friends, smart-money, and live polling views.",
+          "Created leaderboard experiences with PnL filters, copy-score signals, and portfolio overlap analysis.",
+          "Developed token detail views with live price charts, holder breakdowns, trade history, and token intelligence panels.",
+          "Added profile analytics for holdings, active and closed trades, portfolio snapshots, and self-analysis insights.",
+          "Shipped the app as an installable PWA with service-worker-driven live notifications and production API proxies."
+        ],
+        "keyHighlights": [
+          "Real-time crypto trade intelligence",
+          "Friends and smart-money feeds",
+          "Leaderboard-driven trader discovery",
+          "Deep token analytics and charts",
+          "Installable PWA with push alerts",
+          "Mobile-first authenticated experience"
         ]
       },
       {
         "id": 3,
         "title": "MailTrace",
+        "slug": "mailtrace",
         "description": "Email tracking extension for opens, clicks, and approximate geo insights (in progress).",
+        "longDescription": "MailTrace is an email tracking extension in development that provides detailed insights into email interactions. It tracks opens, clicks, approximate geolocation, and other engagement metrics to help professionals better understand their communication impact.",
         "technologies": [
           "JavaScript",
           "Chrome Extension APIs",
           "Node.js"
+        ],
+        "achievements": [
+          "Real-time email open tracking",
+          "Click detection with URL tracking",
+          "Approximate recipient geolocation",
+          "Lightweight and non-intrusive architecture"
+        ],
+        "keyHighlights": [
+          "Email Engagement Insights",
+          "Non-Intrusive Tracking",
+          "Detailed Metrics",
+          "Optimized Performance"
         ]
       },
       {
-        "id": 4,
-        "title": "WEBDIST",
-        "description": "Microservices backend architecture with service discovery, gateway, auth, and multi-database integration.",
+        "id": 1,
+        "title": "CloudShare",
+        "slug": "cloudshare",
+        "description": "Collaborative file-sharing platform for SMEs with roles, versioning, annotations, and notifications.",
+        "longDescription": "CloudShare is a collaborative file-sharing platform built for SMEs. It provides granular role and permission control, file versioning, collaborative annotations, and real-time notifications to streamline team collaboration.",
         "technologies": [
-          "Spring Boot",
+          "Vue",
+          "Express",
+          "Sequelize",
+          "PostgreSQL"
+        ],
+        "achievements": [
+          "Granular role and permission system",
+          "Complete version history with rollback capabilities",
+          "Real-time collaborative annotations",
+          "Smart notification system"
+        ],
+        "keyHighlights": [
+          "Simplified Team Collaboration",
+          "Robust Version Management",
+          "Flexible Access Control",
+          "Intuitive User Interface"
+        ]
+      },
+      {
+        "id": 2,
+        "title": "ClassConnect",
+        "slug": "classconnect",
+        "description": "School-parent-student communication app with assignments, schedules, and notifications.",
+        "longDescription": "ClassConnect connects schools, students, and parents with a centralized communication platform. It enables homework sharing, schedule management, real-time updates, and transparent collaboration between all education stakeholders.",
+        "technologies": [
+          "React",
           "Node.js",
-          "Docker",
-          "Keycloak",
-          "Eureka"
+          "SQL"
+        ],
+        "achievements": [
+          "Unified communication platform for school ecosystem",
+          "Centralized homework and schedule management",
+          "Smart notifications for key stakeholders",
+          "Role-specific interfaces for students, parents, and teachers"
+        ],
+        "keyHighlights": [
+          "Transparent Communication",
+          "Integrated School Management",
+          "Parental Engagement",
+          "Multi-Role Support"
         ]
       }
     ],
