@@ -131,7 +131,8 @@
           "Analytics token et graphiques detailles",
           "PWA installable avec alertes push",
           "Experience mobile-first authentifiee"
-        ]
+        ],
+        "previewVideo": "/fomo_preview.mp4"
       },
       {
         "id": 3,
@@ -353,7 +354,8 @@
           "Deep token analytics and charts",
           "Installable PWA with push alerts",
           "Mobile-first authenticated experience"
-        ]
+        ],
+        "previewVideo": "/fomo_preview.mp4"
       },
       {
         "id": 3,

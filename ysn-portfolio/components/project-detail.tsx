@@ -54,7 +54,9 @@ export default function ProjectDetail({ lang, project }: ProjectDetailProps) {
           }}
         >
           <header className="border-b border-zinc-800 pb-8">
-            <ViewTransition name={getProjectTransitionName(project.slug, "header")}>
+            <ViewTransition
+              name={getProjectTransitionName(project.slug, "header")}
+            >
               <div
                 className="flex items-start justify-between gap-6"
                 style={{
@@ -120,6 +122,24 @@ export default function ProjectDetail({ lang, project }: ProjectDetailProps) {
               </p>
             </ViewTransition>
           </header>
+
+          {project.previewVideo && (
+            <div className="mt-8 overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-950/50 shadow-[0_20px_50px_rgba(0,0,0,0.15)]">
+              <video
+                width={1920}
+                height={1080}
+                controls={false}
+                autoPlay={true}
+                loop={true}
+                className="w-full"
+                poster="/fomo_preview_poster.png"
+                muted
+              >
+                <source src={project.previewVideo} type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          )}
 
           <div className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1.4fr)_minmax(280px,0.9fr)]">
             <section>
