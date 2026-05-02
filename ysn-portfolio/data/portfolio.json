@@ -10,7 +10,7 @@
       "proficiencies": "Competences",
       "experience": "Experience",
       "education": "Formation",
-      "projects": "Projets rÃ©cents",
+      "projects": "Projets récents",
       "languages": "Langues"
     },
     "contact": {
@@ -72,8 +72,8 @@
         "id": 5,
         "title": "Meme Paper",
         "slug": "meme-paper",
-        "description": "Extension Chrome pour le trading simulÃ© de memecoins sur Solana avec donnÃ©es de marchÃ© en temps rÃ©el.",
-        "longDescription": "Meme Paper est une extension Chrome spÃ©cialisÃ©e conÃ§ue pour la simulation de trading haute frÃ©quence dans l'Ã©cosystÃ¨me Solana. Elle permet aux utilisateurs de simuler en temps rÃ©el le trading de memecoins, offrant un environnement sans risque pour tester des stratÃ©gies sur des plateformes comme Axiom.trade avant d'engager du capital rÃ©el.",
+        "description": "Extension Chrome pour le trading simulé de memecoins sur Solana avec données de marché en temps réel.",
+        "longDescription": "Meme Paper est une extension Chrome spécialisée conçue pour la simulation de trading haute fréquence dans l'écosystème Solana. Elle permet aux utilisateurs de simuler en temps réel le trading de memecoins, offrant un environnement sans risque pour tester des stratégies sur des plateformes comme Axiom.trade avant d'engager du capital réel.",
         "technologies": [
           "Chrome Extension APIs",
           "JavaScript",
@@ -83,16 +83,16 @@
           "UI Overlay"
         ],
         "achievements": [
-          "IntÃ©gration de donnÃ©es de marchÃ© Solana en direct pour des simulations de prix prÃ©cises",
-          "Interface utilisateur overlay transparente qui s'intÃ¨gre aux plateformes de trading existantes",
-          "Optimisation pour les mises Ã  jour faible latence, reflÃ©tant la nature rapide du marchÃ© des memecoins Solana",
-          "Lancement rÃ©ussi sur le Chrome Web Store pour valider les stratÃ©gies sans risque financier",
-          "Support pour les interfaces de trading Solana populaires, comblant un manque de marchÃ©"
+          "Intégration de données de marché Solana en direct pour des simulations de prix précises",
+          "Interface utilisateur overlay transparente qui s'intègre aux plateformes de trading existantes",
+          "Optimisation pour les mises à jour faible latence, reflétant la nature rapide du marché des memecoins Solana",
+          "Lancement réussi sur le Chrome Web Store pour valider les stratégies sans risque financier",
+          "Support pour les interfaces de trading Solana populaires, comblant un manque de marché"
         ],
         "keyHighlights": [
-          "Outil de rÃ©duction des risques pour traders",
-          "Support complet de l'Ã©cosystÃ¨me Solana",
-          "ExÃ©cution simulÃ©e haute frÃ©quence",
+          "Outil de réduction des risques pour traders",
+          "Support complet de l'écosystème Solana",
+          "Exécution simulée haute fréquence",
           "UX native sur les plateformes de trading"
         ]
       },
@@ -118,7 +118,7 @@
         ],
         "achievements": [
           "Creation d'un dashboard de trading authentifie avec gestion de session via Privy et rafraichissement automatique du token.",
-          "Implementation de plusieurs modes de feed, incluant toute l'activite, les amis, le smart money et des vues avec polling en direct.",
+          "Implementation de plusieurs modes de feed, incluant toute l'activité, les amis, le smart money et des vues avec polling en direct.",
           "Conception d'experiences leaderboard avec filtres PnL, signaux de copy-score et analyse des recouvrements de portefeuilles.",
           "Developpement de vues detaillees de tokens avec graphiques de prix live, repartition des holders, historique des trades et panneaux d'intelligence token.",
           "Ajout d'analytics de profil pour les holdings, les trades actifs et fermes, les snapshots de portefeuille et les insights d'auto-analyse.",
@@ -139,23 +139,23 @@
         "title": "MailTrace",
         "slug": "mailtrace",
         "description": "Extension email tracking pour ouvertures, clics et geolocalisation approximative (en cours).",
-        "longDescription": "MailTrace est une extension de suivi d'emails en dÃ©veloppement qui fournit des insights dÃ©taillÃ©s sur les interactions avec les emails. Elle suivit les ouvertures, les clics, la gÃ©olocalisation approximative et d'autres mÃ©triques d'engagement pour aider les professionnels Ã  mieux comprendre l'impact de leurs communications.",
+        "longDescription": "MailTrace est une extension de suivi d'emails en développement qui fournit des insights détaillés sur les interactions avec les emails. Elle suivit les ouvertures, les clics, la géolocalisation approximative et d'autres métriques d'engagement pour aider les professionnels à mieux comprendre l'impact de leurs communications.",
         "technologies": [
           "JavaScript",
           "Chrome Extension APIs",
           "Node.js"
         ],
         "achievements": [
-          "Suivi d'ouvertures d'emails en temps rÃ©el",
-          "DÃ©tection des clics avec suivi d'URL",
-          "GÃ©olocalisation approximative des destinataires",
-          "Architecture lÃ©gÃ¨re et non-intrusive"
+          "Suivi d'ouvertures d'emails en temps réel",
+          "Détection des clics avec suivi d'URL",
+          "Géolocalisation approximative des destinataires",
+          "Architecture légère et non-intrusive"
         ],
         "keyHighlights": [
           "Insights d'engagement email",
           "Suivi non-intrusif",
-          "MÃ©triques dÃ©taillÃ©es",
-          "Performance optimisÃ©e"
+          "Métriques détaillées",
+          "Performance optimisée"
         ]
       },
       {
@@ -163,7 +163,7 @@
         "title": "CloudShare",
         "slug": "cloudshare",
         "description": "Plateforme collaborative de partage de fichiers pour PME avec roles, versioning, annotations et notifications.",
-        "longDescription": "CloudShare est une plateforme collaborative de partage de fichiers construite pour les PME. Elle offre un contrÃ´le granulaire des rÃ´les et permissions, le versioning des fichiers, les annotations collaboratives et les notifications en temps rÃ©el pour faciliter la collaboration d'Ã©quipe.",
+        "longDescription": "CloudShare est une plateforme collaborative de partage de fichiers construite pour les PME. Elle offre un contrôlée des rôles et permissions, le versioning des fichiers, les annotations collaboratives et les notifications en temps réel pour faciliter la collaboration d'équipe.",
         "technologies": [
           "Vue",
           "Express",
@@ -171,15 +171,15 @@
           "PostgreSQL"
         ],
         "achievements": [
-          "SystÃ¨me de rÃ´les et permissions granulaire",
-          "Historique complet des versions avec possibilitÃ© de restauration",
-          "Annotations collaboratives en temps rÃ©el",
-          "SystÃ¨me de notifications intelligent"
+          "Système de rôles et permissions granulaire",
+          "Historique complet des versions avec possibilité de restauration",
+          "Annotations collaboratives en temps réel",
+          "Système de notifications intelligent"
         ],
         "keyHighlights": [
-          "Collaboration d'Ã©quipe simplifiÃ©e",
+          "Collaboration d'équipe simplifiée",
           "Gestion de versions robuste",
-          "ContrÃ´le d'accÃ¨s flexible",
+          "Contrôle d'accès flexible",
           "Interface utilisateur intuitive"
         ]
       },
@@ -188,17 +188,17 @@
         "title": "ClassConnect",
         "slug": "classconnect",
         "description": "Application de communication ecole-eleves-parents avec devoirs, emploi du temps et notifications.",
-        "longDescription": "ClassConnect connecte les Ã©coles, les Ã©lÃ¨ves et les parents avec une plateforme de communication centralisÃ©e. Elle permet le partage des devoirs, l'affichage de l'emploi du temps, les mises Ã  jour en temps rÃ©el et une collaboration transparente entre tous les acteurs de l'Ã©ducation.",
+        "longDescription": "ClassConnect connecte les écoles, les élèves et les parents avec une plateforme de communication centralisée. Elle permet le partage des devoirs, l'affichage de l'emploi du temps, les mises à jour en temps réel et une collaboration transparente entre tous les acteurs de l'éducation.",
         "technologies": [
           "React",
           "Node.js",
           "SQL"
         ],
         "achievements": [
-          "Plateforme de communication unifiÃ©e pour l'Ã©cosystÃ¨me scolaire",
-          "Gestion centralisÃ©e des devoirs et de l'emploi du temps",
-          "Notifications intelligentes pour les acteurs clÃ©s",
-          "Interface adaptÃ©e pour Ã©lÃ¨ves, parents et enseignants"
+          "Plateforme de communication unifiée pour l'écosystème scolaire",
+          "Gestion centralisée des devoirs et de l'emploi du temps",
+          "Notifications intelligentes pour les acteurs clés",
+          "Interface adaptée pour élèves, parents et enseignants"
         ],
         "keyHighlights": [
           "Communication transparente",
