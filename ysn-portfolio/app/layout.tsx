@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import "./fonts.css";
 import "./globals.css";
+import ClarityInit from "@/components/clarity-init";
 import MorphingObject from "@/components/morphing-object";
 import { BASE_URL, personSchema, websiteSchema } from "@/lib/seo";
 
@@ -104,6 +105,7 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased">
+        <ClarityInit />
         <MorphingObject />
         {children}
       </body>
