@@ -2,8 +2,8 @@
   "fr": {
     "hero": {
       "name": "Yassine Karoui",
-      "title": "Product Engineer & Fullstack Builder",
-      "description": "J'aime creer des produits web utiles, rapides et elegants, de l'idee au deploiement."
+      "title": "Product Engineer & SaaS Builder",
+      "description": "J'aime créer des produits web utiles, rapides et élégants, de l'idée au déploiement."
     },
     "sections": {
       "contact": "Contact",
@@ -42,21 +42,21 @@
         "title": "Independant - Product Engineer",
         "company": "Freelance",
         "period": "Fev 2025 - Present",
-        "description": "Conception et livraison de produits SaaS orientes productivite. Build fullstack, integration API, optimisation UX et mise en production cloud."
+        "description": "Conception et livraison de produits SaaS orientés productivité. Build fullstack, integration API, optimisation UX et mise en production cloud."
       },
       {
         "id": 2,
         "title": "Developpeur Lead",
         "company": "Redesk (CDD) - Paris, France",
         "period": "Dec 2023 - Jan 2025",
-        "description": "Creation d'une PWA d'inventaire en Nuxt/Vue et Django/Python, mode offline avec synchronisation, tests E2E Playwright, cache Redis et file de requetes backend."
+        "description": "Création d'une PWA d'inventaire en Nuxt/Vue et Django/Python, mode offline avec synchronisation, tests E2E Playwright, cache Redis et file de requêtes backend."
       },
       {
         "id": 3,
         "title": "Developpeur Fullstack",
         "company": "Pzaz.TV / Wowzers - Remote (UK)",
         "period": "Jan 2022 - Dec 2023",
-        "description": "Developpement de fonctionnalites sur des plateformes media et growth SaaS, collaboration agile, pipelines CI/CD et amelioration de l'experience utilisateur a grande echelle."
+        "description": "Développement de fonctionnalités sur des plateformes media et growth SaaS, collaboration agile, pipelines CI/CD et amélioration de l'expérience utilisateur à grande echelle."
       }
     ],
     "education": [
@@ -225,7 +225,7 @@
   "en": {
     "hero": {
       "name": "Yassine Karoui",
-      "title": "Product Engineer & Fullstack Builder",
+      "title": "Product Engineer & SaaS Builder",
       "description": "I design and ship useful, fast, elegant web products from idea to production."
     },
     "sections": {

@@ -1,27 +1,28 @@
-import { locales, type Locale } from "@/lib/i18n";
+import ClickHere from "@/components/click-here";
+import HeroPicture from "@/components/hero-picture";
 import Navbar from "@/components/navbar";
-import Image from "next/image";
-import Script from "next/script";
-import { type Metadata } from "next";
+import ProjectCard from "@/components/project-card";
+import { locales, type Locale } from "@/lib/i18n";
+import { getPortfolioData } from "@/lib/portfolio";
+import {
+  BASE_URL,
+  generateJsonLd,
+  generateMetadata as generateSeoMetadata,
+} from "@/lib/seo";
 import {
   Briefcase,
-  GraduationCap,
   Code2,
-  Sparkles,
-  Mail,
-  Phone,
-  MapPin,
   Github,
+  GraduationCap,
   Languages,
+  Mail,
+  MapPin,
+  Phone,
+  Sparkles,
 } from "lucide-react";
-import HeroPicture from "@/components/hero-picture";
-import ProjectCard from "@/components/project-card";
-import {
-  generateMetadata as generateSeoMetadata,
-  generateJsonLd,
-  BASE_URL,
-} from "@/lib/seo";
-import { getPortfolioData } from "@/lib/portfolio";
+import { type Metadata } from "next";
+import Image from "next/image";
+import Script from "next/script";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ lang: locale }));
@@ -43,7 +44,7 @@ export async function generateMetadata({
     description: data.hero.description,
     keywords: [
       "Product Engineer",
-      "Fullstack Developer",
+      "SaaS Builder",
       "React",
       "Node.js",
       "TypeScript",
@@ -61,7 +62,6 @@ export default async function LocalePage({
 }) {
   const { lang } = await params;
   const data = getPortfolioData(lang);
-
   return (
     <div className="min-h-screen overflow-x-clip bg-[#101011] text-foreground">
       <Script
@@ -243,9 +243,10 @@ export default async function LocalePage({
             {data.sections.projects}
           </h2>
           <div className="space-y-6 lg:w-3/4 lg:space-y-8">
-            {data.projects.map((item) => (
-              <div key={item.id} className="group">
+            {data.projects.map((item, index) => (
+              <div key={item.id} className="group relative">
                 <ProjectCard lang={lang} project={item} />
+                {index === 0 && <ClickHere />}
               </div>
             ))}
           </div>

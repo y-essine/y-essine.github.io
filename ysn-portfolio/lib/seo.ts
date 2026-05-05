@@ -16,7 +16,7 @@ export function generateMetadata(config: SEOConfig): Metadata {
     title,
     description,
     keywords = [],
-    image = "/og-image.png",
+    image = "/pfp.jpg",
     url = BASE_URL,
     locale = "en",
   } = config;
@@ -57,7 +57,7 @@ export function generateMetadata(config: SEOConfig): Metadata {
       title,
       description,
       images: [imageUrl],
-      creator: "@yassine_karoui",
+      creator: "@pimplerousse",
     },
     robots: {
       index: true,
@@ -89,7 +89,7 @@ export const personSchema = {
   "@type": "Person",
   name: "Yassine Karoui",
   url: BASE_URL,
-  jobTitle: "Product Engineer & Fullstack Builder",
+  jobTitle: "Product Engineer & SaaS Builder",
   image: `${BASE_URL}/pfp.jpg`,
   sameAs: ["https://github.com/y-essine", "https://linkedin.com/in/y-essine"],
   email: "yassine.karoui.x@gmail.com",

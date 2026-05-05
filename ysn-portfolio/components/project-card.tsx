@@ -29,7 +29,9 @@ export default function ProjectCard({ lang, project }: ProjectCardProps) {
         }}
       >
         <div className="mb-3 flex items-start justify-between gap-4">
-          <ViewTransition name={getProjectTransitionName(project.slug, "header")}>
+          <ViewTransition
+            name={getProjectTransitionName(project.slug, "header")}
+          >
             <div
               className="flex min-w-0 flex-1 items-start gap-4"
               style={{
