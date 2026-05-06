@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { type Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import Script from "next/script";
 
 export function generateStaticParams() {
@@ -166,17 +167,19 @@ export default async function LocalePage({
                         </div>
                       )}
                       <div className="flex-1 min-w-0">
-                        <h3 className="text-base sm:text-lg font-medium">
-                          {item.title}
-                        </h3>
+                        <div className="flex justify-between items-start">
+                          <h3 className="text-base sm:text-lg font-medium ">
+                            {item.title}
+                          </h3>
+                          <span className="text-xs text-zinc-400 sm:text-sm shrink-0 leading-6">
+                            {item.period}
+                          </span>
+                        </div>
                         <p className="text-sm text-zinc-400 sm:text-base">
                           {item.company}
                         </p>
                       </div>
                     </div>
-                    <span className="text-xs text-zinc-400 sm:text-sm shrink-0">
-                      {item.period}
-                    </span>
                   </div>
                   <p className="text-sm text-zinc-400 sm:text-base">
                     {item.description}
@@ -307,7 +310,11 @@ export default async function LocalePage({
                 {data.contact.location}
               </p>
             </div>
-            <div className="rounded-lg border border-zinc-800 p-4 sm:p-5">
+            <Link
+              href={`https://github.com/${data.contact.github}`}
+              target="_blank"
+              className="rounded-lg border border-zinc-800 p-4 sm:p-5"
+            >
               <p className="mb-2 flex items-center gap-2 text-xs uppercase tracking-wide text-zinc-500">
                 <Github className="h-3.5 w-3.5" />
                 GitHub
@@ -315,7 +322,7 @@ export default async function LocalePage({
               <p className="text-sm text-zinc-200 sm:text-base">
                 {data.contact.github}
               </p>
-            </div>
+            </Link>
           </div>
         </section>
       </main>

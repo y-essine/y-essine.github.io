@@ -24,9 +24,9 @@ const SECTION_STOPS = [
   { id: "hero", shape: 0 },
   { id: "proficiencies", shape: 1 },
   { id: "experience", shape: 2 },
-  { id: "education", shape: 3 },
-  { id: "projects", shape: 1 },
-  { id: "project-detail-hero", shape: 1 },
+  { id: "education", shape: 0 },
+  { id: "projects", shape: 3 },
+  { id: "project-detail-hero", shape: 3 },
   { id: "languages", shape: 5 },
   { id: "contact", shape: 4 },
 ] as const;
@@ -60,7 +60,9 @@ export default function MorphingObject() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const activeIndexRef = useRef(0);
-  const sectionElsRef = useRef<Array<{ el: HTMLElement; stop: SectionStop }>>([]);
+  const sectionElsRef = useRef<Array<{ el: HTMLElement; stop: SectionStop }>>(
+    []
+  );
   const pendingSectionIndexRef = useRef(0);
   const sectionChangeTimerRef = useRef<number | null>(null);
   const stateRef = useRef<ParticleState>({
