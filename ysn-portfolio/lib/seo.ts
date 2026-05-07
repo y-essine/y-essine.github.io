@@ -95,7 +95,7 @@ export const personSchema = {
   email: "yassine.karoui.x@gmail.com",
   location: {
     "@type": "Place",
-    name: "Paris, France",
+    name: "Nabel, Tunisia",
   },
 };
 

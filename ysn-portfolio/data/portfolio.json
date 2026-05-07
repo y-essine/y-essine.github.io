@@ -14,7 +14,7 @@
       "languages": "Langues"
     },
     "contact": {
-      "location": "Paris, France",
+      "location": "Nabeul, Tunisie",
       "phone": "+33 7 77 31 94 15",
       "email": "yassine.karoui.x@gmail.com",
       "github": "y-essine"
@@ -49,7 +49,7 @@
         "title": "Developpeur Lead",
         "company": "Redesk (CDD) - Paris, France",
         "period": "Dec 2023 - Jan 2025",
-        "description": "Création d'une PWA d'inventaire en Nuxt/Vue et Django/Python, mode offline avec synchronisation, tests E2E Playwright, cache Redis et file de requêtes backend."
+        "description": "Création d'une app d'inventaire en pour web et mobile; Avec mode offline avec synchronisation, tests E2E Playwright, cache Redis et file de requêtes backend."
       },
       {
         "id": 3,
@@ -237,7 +237,7 @@
       "languages": "Languages"
     },
     "contact": {
-      "location": "Paris, France",
+      "location": "Nabel, Tunisia",
       "phone": "+33 7 77 31 94 15",
       "email": "yassine.karoui.x@gmail.com",
       "github": "y-essine"
@@ -272,7 +272,7 @@
         "title": "Lead Developer",
         "company": "Redesk (Contract) - Paris, France",
         "period": "Dec 2023 - Jan 2025",
-        "description": "Delivered an inventory PWA with Nuxt/Vue and Django/Python, offline sync workflows, Playwright E2E coverage, and Redis-backed backend performance improvements."
+        "description": "Delivered an inventory stock-taking app for web and mobile; With offline sync workflows, Playwright E2E coverage, and Redis-backed backend performance improvements."
       },
       {
         "id": 3,
