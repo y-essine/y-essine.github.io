@@ -552,6 +552,7 @@ export default function MorphingObject() {
     let overriding = false;
     let overrideTimer = 0;
     let overrideScrollY = 0;
+    let overrideStartedAt = 0;
     // Bumped whenever what should be shown changes, so a shape that finishes
     // downloading late knows it is no longer wanted.
     let requestId = 0;
@@ -572,6 +573,12 @@ export default function MorphingObject() {
     };
 
     const onOverrideScroll = () => {
+      // Arrow keys (e.g. the Konami code's ↓↓) can still be smooth-scrolling
+      // when an egg starts; let that settle before scrolling ends it.
+      if (performance.now() - overrideStartedAt < 500) {
+        overrideScrollY = window.scrollY;
+        return;
+      }
       if (Math.abs(window.scrollY - overrideScrollY) > SCROLL_RELEASE_PX) {
         endOverride();
       }
@@ -584,6 +591,7 @@ export default function MorphingObject() {
         window.addEventListener("scroll", onOverrideScroll, { passive: true });
       }
       overrideScrollY = window.scrollY;
+      overrideStartedAt = performance.now();
       overrideTimer = window.setTimeout(
         endOverride,
         holdMs + (reducedMotion ? STILL_FADE_MS : 0)

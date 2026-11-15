@@ -2,9 +2,9 @@ import { type Point3D } from './types';
 import { N_POINTS } from './constants';
 import { normalizeShape, orderForMorph, scaleShape } from './utils';
 
-// 文 ("writing / language"), the character outlined in kanji_data_new.ts,
-// rebuilt from its four strokes so the points can be spread evenly.
-// Coordinates share the raw outline's space (y up); `w` is the stroke width.
+// 文 ("writing / language"), built from its four strokes so the points can
+// be spread evenly. Coordinates are in the original outline's space (y up);
+// `w` is the stroke width.
 type Stroke = { w: number; path: Array<[number, number]> };
 const STROKES: Stroke[] = [
   // top tick
