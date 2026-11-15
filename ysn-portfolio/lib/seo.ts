@@ -6,8 +6,9 @@ export interface SEOConfig {
   title: string;
   description: string;
   keywords?: string[];
-  image?: string;
   url?: string;
+  /** Path after the locale, e.g. "/projects/fomo-app", for hreflang alternates. */
+  path?: string;
   locale?: string;
 }
 
@@ -16,12 +17,12 @@ export function generateMetadata(config: SEOConfig): Metadata {
     title,
     description,
     keywords = [],
-    image = "/pfp.jpg",
     url = BASE_URL,
+    path = "",
     locale = "en",
   } = config;
 
-  const imageUrl = image.startsWith("http") ? image : `${BASE_URL}${image}`;
+  // Share images come from the opengraph-image/twitter-image routes.
 
   return {
     title,
@@ -31,8 +32,9 @@ export function generateMetadata(config: SEOConfig): Metadata {
     alternates: {
       canonical: url,
       languages: {
-        "en-US": `${BASE_URL}/en`,
-        "fr-FR": `${BASE_URL}/fr`,
+        "en-US": `${BASE_URL}/en${path}`,
+        "fr-FR": `${BASE_URL}/fr${path}`,
+        "x-default": `${BASE_URL}/fr${path}`,
       },
     },
     openGraph: {
@@ -41,22 +43,13 @@ export function generateMetadata(config: SEOConfig): Metadata {
       url,
       type: "website",
       siteName: "Yassine Karoui",
-      images: [
-        {
-          url: imageUrl,
-          width: 1200,
-          height: 630,
-          alt: title,
-          type: "image/png",
-        },
-      ],
-      locale,
+      // Open Graph wants fr_FR, not fr-FR.
+      locale: locale.replace("-", "_"),
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [imageUrl],
       creator: "@pimplerousse",
     },
     robots: {

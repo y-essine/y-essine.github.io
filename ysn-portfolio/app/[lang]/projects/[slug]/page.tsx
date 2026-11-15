@@ -39,6 +39,7 @@ export async function generateMetadata({
     description: project.description,
     keywords: project.technologies,
     url: `${BASE_URL}/${lang}/projects/${slug}`,
+    path: `/projects/${slug}`,
     locale: lang === "en" ? "en-US" : "fr-FR",
   });
 }

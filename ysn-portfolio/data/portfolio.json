@@ -7,8 +7,8 @@
     },
     "sections": {
       "contact": "Contact",
-      "proficiencies": "Competences",
-      "experience": "Experience",
+      "proficiencies": "Compétences",
+      "experience": "Expérience",
       "education": "Formation",
       "projects": "Projets récents",
       "languages": "Langues"
@@ -39,30 +39,30 @@
     "experience": [
       {
         "id": 1,
-        "title": "Independant - Product Engineer",
+        "title": "Indépendant - Product Engineer",
         "company": "Freelance",
-        "period": "Fev 2025 - Present",
-        "description": "Conception et livraison de produits SaaS orientés productivité. Build fullstack, integration API, optimisation UX et mise en production cloud."
+        "period": "Fév 2025 - Présent",
+        "description": "Conception et livraison de produits SaaS orientés productivité. Build fullstack, intégration API, optimisation UX et mise en production cloud."
       },
       {
         "id": 2,
-        "title": "Developpeur Lead",
+        "title": "Développeur Lead",
         "company": "Redesk (CDD) - Paris, France",
-        "period": "Dec 2023 - Jan 2025",
-        "description": "Création d'une app d'inventaire en pour web et mobile; Avec mode offline avec synchronisation, tests E2E Playwright, cache Redis et file de requêtes backend."
+        "period": "Déc 2023 - Jan 2025",
+        "description": "Création d'une app d'inventaire web et mobile, avec mode offline et synchronisation, tests E2E Playwright, cache Redis et file de requêtes backend."
       },
       {
         "id": 3,
-        "title": "Developpeur Fullstack",
+        "title": "Développeur Fullstack",
         "company": "Pzaz.TV / Wowzers - Remote (UK)",
-        "period": "Jan 2022 - Dec 2023",
-        "description": "Développement de fonctionnalités sur des plateformes media et growth SaaS, collaboration agile, pipelines CI/CD et amélioration de l'expérience utilisateur à grande echelle."
+        "period": "Jan 2022 - Déc 2023",
+        "description": "Développement de fonctionnalités sur des plateformes media et growth SaaS, collaboration agile, pipelines CI/CD et amélioration de l'expérience utilisateur à grande échelle."
       }
     ],
     "education": [
       {
         "id": 1,
-        "degree": "Cycle Ingenieur en Informatique",
+        "degree": "Cycle Ingénieur en Informatique",
         "institution": "ESPRIT, Ariana, Tunisie",
         "year": "2017 - 2022"
       }
@@ -101,8 +101,8 @@
         "id": 6,
         "title": "fomo.app",
         "slug": "fomo-app",
-        "description": "Application mobile-first d'intelligence de trading crypto pour suivre les trades en direct, la performance des traders et l'activite des tokens.",
-        "longDescription": "fomo.app est un client d'analytics crypto base sur Vue, pense pour les traders qui veulent suivre l'activite du marche et decouvrir des wallets a fort signal. Il combine un acces authentifie avec des feeds de type social, des leaderboards, des analytics de profils et des vues detaillees sur les tokens qui mettent en avant holders, graphiques, alertes et historique de trades. L'application est distribuee comme PWA installable et integre du live polling, des notifications push et des proxys API/auth personnalises pour la production.",
+        "description": "Application mobile-first d'intelligence de trading crypto pour suivre les trades en direct, la performance des traders et l'activité des tokens.",
+        "longDescription": "fomo.app est un client d'analytics crypto basé sur Vue, pensé pour les traders qui veulent suivre l'activité du marché et découvrir des wallets à fort signal. Il combine un accès authentifié avec des feeds de type social, des leaderboards, des analytics de profils et des vues détaillées sur les tokens qui mettent en avant holders, graphiques, alertes et historique de trades. L'application est distribuée comme PWA installable et intègre du live polling, des notifications push et des proxys API/auth personnalisés pour la production.",
         "technologies": [
           "Vue 3",
           "TypeScript",
@@ -118,20 +118,20 @@
           "Veaury"
         ],
         "achievements": [
-          "Creation d'un dashboard de trading authentifie avec gestion de session via Privy et rafraichissement automatique du token.",
-          "Implementation de plusieurs modes de feed, incluant toute l'activité, les amis, le smart money et des vues avec polling en direct.",
-          "Conception d'experiences leaderboard avec filtres PnL, signaux de copy-score et analyse des recouvrements de portefeuilles.",
-          "Developpement de vues detaillees de tokens avec graphiques de prix live, repartition des holders, historique des trades et panneaux d'intelligence token.",
-          "Ajout d'analytics de profil pour les holdings, les trades actifs et fermes, les snapshots de portefeuille et les insights d'auto-analyse.",
+          "Création d'un dashboard de trading authentifié avec gestion de session via Privy et rafraîchissement automatique du token.",
+          "Implémentation de plusieurs modes de feed, incluant toute l'activité, les amis, le smart money et des vues avec polling en direct.",
+          "Conception d'expériences leaderboard avec filtres PnL, signaux de copy-score et analyse des recouvrements de portefeuilles.",
+          "Développement de vues détaillées de tokens avec graphiques de prix live, répartition des holders, historique des trades et panneaux d'intelligence token.",
+          "Ajout d'analytics de profil pour les holdings, les trades actifs et fermés, les snapshots de portefeuille et les insights d'auto-analyse.",
           "Livraison de l'application comme PWA installable avec notifications live via service worker et proxys API de production."
         ],
         "keyHighlights": [
-          "Intelligence crypto en temps reel",
+          "Intelligence crypto en temps réel",
           "Feeds amis et smart-money",
-          "Decouverte de traders via leaderboard",
-          "Analytics token et graphiques detailles",
+          "Découverte de traders via leaderboard",
+          "Analytics token et graphiques détaillés",
           "PWA installable avec alertes push",
-          "Experience mobile-first authentifiee"
+          "Expérience mobile-first authentifiée"
         ],
         "previewVideo": "/fomo_preview.mp4"
       },
@@ -139,8 +139,8 @@
         "id": 3,
         "title": "MailTrace",
         "slug": "mailtrace",
-        "description": "Extension email tracking pour ouvertures, clics et geolocalisation approximative (en cours).",
-        "longDescription": "MailTrace est une extension de suivi d'emails en développement qui fournit des insights détaillés sur les interactions avec les emails. Elle suivit les ouvertures, les clics, la géolocalisation approximative et d'autres métriques d'engagement pour aider les professionnels à mieux comprendre l'impact de leurs communications.",
+        "description": "Extension email tracking pour ouvertures, clics et géolocalisation approximative (en cours).",
+        "longDescription": "MailTrace est une extension de suivi d'emails en développement qui fournit des insights détaillés sur les interactions avec les emails. Elle suit les ouvertures, les clics, la géolocalisation approximative et d'autres métriques d'engagement pour aider les professionnels à mieux comprendre l'impact de leurs communications.",
         "technologies": [
           "JavaScript",
           "Chrome Extension APIs",
@@ -163,8 +163,8 @@
         "id": 1,
         "title": "CloudShare",
         "slug": "cloudshare",
-        "description": "Plateforme collaborative de partage de fichiers pour PME avec roles, versioning, annotations et notifications.",
-        "longDescription": "CloudShare est une plateforme collaborative de partage de fichiers construite pour les PME. Elle offre un contrôlée des rôles et permissions, le versioning des fichiers, les annotations collaboratives et les notifications en temps réel pour faciliter la collaboration d'équipe.",
+        "description": "Plateforme collaborative de partage de fichiers pour PME avec rôles, versioning, annotations et notifications.",
+        "longDescription": "CloudShare est une plateforme collaborative de partage de fichiers construite pour les PME. Elle offre un contrôle des rôles et permissions, le versioning des fichiers, les annotations collaboratives et les notifications en temps réel pour faciliter la collaboration d'équipe.",
         "technologies": [
           "Vue",
           "Express",
@@ -188,7 +188,7 @@
         "id": 2,
         "title": "ClassConnect",
         "slug": "classconnect",
-        "description": "Application de communication ecole-eleves-parents avec devoirs, emploi du temps et notifications.",
+        "description": "Application de communication école-élèves-parents avec devoirs, emploi du temps et notifications.",
         "longDescription": "ClassConnect connecte les écoles, les élèves et les parents avec une plateforme de communication centralisée. Elle permet le partage des devoirs, l'affichage de l'emploi du temps, les mises à jour en temps réel et une collaboration transparente entre tous les acteurs de l'éducation.",
         "technologies": [
           "React",
@@ -203,16 +203,16 @@
         ],
         "keyHighlights": [
           "Communication transparente",
-          "Gestion scolaire intÃ©grÃ©e",
+          "Gestion scolaire intégrée",
           "Engagement des parents",
-          "Support multi-rÃ´les"
+          "Support multi-rôles"
         ]
       }
     ],
     "languages": [
       {
         "id": 1,
-        "name": "Francais",
+        "name": "Français",
         "level": "Courant"
       },
       {
@@ -271,14 +271,14 @@
         "id": 2,
         "title": "Lead Developer",
         "company": "Redesk (Contract) - Paris, France",
-        "period": "Dec 2023 - Jan 2025",
+        "period": "Déc 2023 - Jan 2025",
         "description": "Delivered an inventory stock-taking app for web and mobile; With offline sync workflows, Playwright E2E coverage, and Redis-backed backend performance improvements."
       },
       {
         "id": 3,
         "title": "Fullstack Developer",
         "company": "Pzaz.TV / Wowzers - Remote (UK)",
-        "period": "Jan 2022 - Dec 2023",
+        "period": "Jan 2022 - Déc 2023",
         "description": "Shipped product features across media and growth SaaS platforms, improved CI/CD practices, and supported high-usage user flows."
       }
     ],

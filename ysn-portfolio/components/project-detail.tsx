@@ -25,8 +25,8 @@ const copy = {
     back: "Retour aux projets",
     overview: "Vue d'ensemble",
     stack: "Stack technique",
-    highlights: "Points cles",
-    outcomes: "Ce qui a ete livre",
+    highlights: "Points clés",
+    outcomes: "Ce qui a été livré",
   },
 } as const;
 

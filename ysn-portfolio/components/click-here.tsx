@@ -1,51 +1,55 @@
 "use client";
 import { ArrowDownLeft } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 
 const PROJECT_CLICK_STORAGE_KEY = "isClickedBefore";
+const HINT_CHANGE_EVENT = "click-here-hint-change";
+
+const readClickedBefore = () => {
+  try {
+    return localStorage.getItem(PROJECT_CLICK_STORAGE_KEY) === "true";
+  } catch {
+    return true; // storage blocked: don't nag
+  }
+};
+
+const subscribe = (onChange: () => void) => {
+  window.addEventListener("storage", onChange);
+  window.addEventListener(HINT_CHANGE_EVENT, onChange);
+  return () => {
+    window.removeEventListener("storage", onChange);
+    window.removeEventListener(HINT_CHANGE_EVENT, onChange);
+  };
+};
 
 const ClickHere = () => {
-  const [isMounted, setIsMounted] = useState(false);
-  const [shouldShowHint, setShouldShowHint] = useState(false);
+  // Server render and hydration show nothing; the client then reads storage.
+  const shouldShowHint = useSyncExternalStore(
+    subscribe,
+    () => !readClickedBefore(),
+    () => false
+  );
 
   useEffect(() => {
-    setIsMounted(true);
-
-    const storedValue = localStorage.getItem(PROJECT_CLICK_STORAGE_KEY);
-
-    if (storedValue === null) {
-      localStorage.setItem(PROJECT_CLICK_STORAGE_KEY, "false");
-    }
-
-    const clickedBefore = storedValue === "true";
-
-    if (clickedBefore) {
-      setShouldShowHint(false);
-      return;
-    }
-
-    setShouldShowHint(true);
+    if (!shouldShowHint) return;
 
     const handleProjectLinkClick = (event: MouseEvent) => {
       const target = event.target as HTMLElement | null;
-      const projectLink = target?.closest('a[href*="/projects/"]');
+      if (!target?.closest('a[href*="/projects/"]')) return;
 
-      if (!projectLink) {
-        return;
-      }
-
-      localStorage.setItem(PROJECT_CLICK_STORAGE_KEY, "true");
-      setShouldShowHint(false);
+      try {
+        localStorage.setItem(PROJECT_CLICK_STORAGE_KEY, "true");
+      } catch {}
+      window.dispatchEvent(new Event(HINT_CHANGE_EVENT));
     };
 
     document.addEventListener("click", handleProjectLinkClick, true);
-
     return () => {
       document.removeEventListener("click", handleProjectLinkClick, true);
     };
-  }, []);
+  }, [shouldShowHint]);
 
-  if (!isMounted || !shouldShowHint) {
+  if (!shouldShowHint) {
     return null;
   }
 
