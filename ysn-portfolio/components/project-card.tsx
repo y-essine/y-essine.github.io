@@ -20,39 +20,32 @@ export default function ProjectCard({ lang, project }: ProjectCardProps) {
   const logoSrc = getProjectLogo(project.slug);
 
   return (
-    <ViewTransition name={getProjectTransitionName(project.slug, "card")}>
+    <ViewTransition
+      name={getProjectTransitionName(project.slug, "card")}
+      share="auto"
+      default="none"
+    >
       <Link
         href={href}
         className="group block rounded-lg bg-zinc-900/50 p-4 transition-colors hover:bg-zinc-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-zinc-300/60 sm:p-6"
-        style={{
-          viewTransitionName: getProjectTransitionName(project.slug, "card"),
-        }}
       >
         <div className="mb-3 flex items-start justify-between gap-4">
           <ViewTransition
             name={getProjectTransitionName(project.slug, "header")}
+            share="auto"
+            default="none"
           >
             <div
               className="flex min-w-0 flex-1 items-start gap-4"
-              style={{
-                viewTransitionName: getProjectTransitionName(
-                  project.slug,
-                  "header"
-                ),
-              }}
             >
               {logoSrc ? (
                 <ViewTransition
                   name={getProjectTransitionName(project.slug, "logo")}
+                  share="auto"
+                  default="none"
                 >
                   <div
                     className="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-zinc-800 bg-zinc-950/80"
-                    style={{
-                      viewTransitionName: getProjectTransitionName(
-                        project.slug,
-                        "logo"
-                      ),
-                    }}
                   >
                     <Image
                       src={logoSrc}
@@ -66,15 +59,11 @@ export default function ProjectCard({ lang, project }: ProjectCardProps) {
               ) : null}
               <ViewTransition
                 name={getProjectTransitionName(project.slug, "title")}
+                share="auto"
+                default="none"
               >
                 <h3
                   className="min-w-0 pt-1 text-base sm:text-lg"
-                  style={{
-                    viewTransitionName: getProjectTransitionName(
-                      project.slug,
-                      "title"
-                    ),
-                  }}
                 >
                   {project.title}
                 </h3>
@@ -85,15 +74,11 @@ export default function ProjectCard({ lang, project }: ProjectCardProps) {
         </div>
         <ViewTransition
           name={getProjectTransitionName(project.slug, "description")}
+          share="auto"
+          default="none"
         >
           <p
             className="mb-4 text-sm text-zinc-400 sm:text-base"
-            style={{
-              viewTransitionName: getProjectTransitionName(
-                project.slug,
-                "description"
-              ),
-            }}
           >
             {project.description}
           </p>

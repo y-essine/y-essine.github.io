@@ -6,6 +6,7 @@ import { type Locale } from "@/lib/i18n";
 import { type PortfolioProject } from "@/lib/portfolio";
 import { getProjectTransitionName } from "@/components/project-card";
 import { getProjectLogo } from "@/lib/project-assets";
+import PreviewVideo from "@/components/preview-video";
 
 type ProjectDetailProps = {
   lang: Locale;
@@ -46,37 +47,30 @@ export default function ProjectDetail({ lang, project }: ProjectDetailProps) {
         {labels.back}
       </Link>
 
-      <ViewTransition name={getProjectTransitionName(project.slug, "card")}>
+      <ViewTransition
+        name={getProjectTransitionName(project.slug, "card")}
+        share="auto"
+        default="none"
+      >
         <article
           className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6 sm:p-8"
-          style={{
-            viewTransitionName: getProjectTransitionName(project.slug, "card"),
-          }}
         >
           <header className="border-b border-zinc-800 pb-8">
             <ViewTransition
               name={getProjectTransitionName(project.slug, "header")}
+              share="auto"
+              default="none"
             >
               <div
                 className="flex items-start justify-between gap-6"
-                style={{
-                  viewTransitionName: getProjectTransitionName(
-                    project.slug,
-                    "header"
-                  ),
-                }}
               >
                 <ViewTransition
                   name={getProjectTransitionName(project.slug, "title")}
+                  share="auto"
+                  default="none"
                 >
                   <h1
                     className="min-w-0 flex-1 pt-1 text-3xl font-medium leading-tight text-zinc-50 sm:text-5xl"
-                    style={{
-                      viewTransitionName: getProjectTransitionName(
-                        project.slug,
-                        "title"
-                      ),
-                    }}
                   >
                     {project.title}
                   </h1>
@@ -84,15 +78,11 @@ export default function ProjectDetail({ lang, project }: ProjectDetailProps) {
                 {logoSrc ? (
                   <ViewTransition
                     name={getProjectTransitionName(project.slug, "logo")}
+                    share="auto"
+                    default="none"
                   >
                     <div
                       className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-950/80 shadow-[0_20px_50px_rgba(0,0,0,0.25)] sm:h-28 sm:w-28"
-                      style={{
-                        viewTransitionName: getProjectTransitionName(
-                          project.slug,
-                          "logo"
-                        ),
-                      }}
                     >
                       <Image
                         src={logoSrc}
@@ -108,15 +98,11 @@ export default function ProjectDetail({ lang, project }: ProjectDetailProps) {
             </ViewTransition>
             <ViewTransition
               name={getProjectTransitionName(project.slug, "description")}
+              share="auto"
+              default="none"
             >
               <p
                 className="mt-6 max-w-3xl text-base text-zinc-400 sm:text-lg"
-                style={{
-                  viewTransitionName: getProjectTransitionName(
-                    project.slug,
-                    "description"
-                  ),
-                }}
               >
                 {project.description}
               </p>
@@ -125,19 +111,10 @@ export default function ProjectDetail({ lang, project }: ProjectDetailProps) {
 
           {project.previewVideo && (
             <div className="mt-8 overflow-hidden rounded-2xl border border-zinc-800 bg-zinc-950/50 shadow-[0_20px_50px_rgba(0,0,0,0.15)]">
-              <video
-                width={1920}
-                height={1080}
-                controls={false}
-                autoPlay={true}
-                loop={true}
-                className="w-full"
-                poster="/fomo_preview_poster.png"
-                muted
-              >
-                <source src={project.previewVideo} type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
+              <PreviewVideo
+                src={project.previewVideo}
+                title={`${project.title} preview`}
+              />
             </div>
           )}
 

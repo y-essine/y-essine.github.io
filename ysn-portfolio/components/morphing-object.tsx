@@ -2,29 +2,45 @@
 
 import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
-import { N_POINTS } from "./shapes/constants";
+import {
+  createGLRenderer,
+  createObjectLoop,
+  DEPTH_BUCKETS,
+  DISTANCE,
+  flattenShapes,
+  GRADIENT_STOPS,
+  INITIAL_CANVAS_SIZE,
+  PARTICLE_ALPHA_MIN,
+  PARTICLE_ALPHA_RANGE,
+  PARTICLE_RADIUS_FLOOR,
+  PARTICLE_RADIUS_MIN,
+  PARTICLE_RADIUS_RANGE,
+  PROJECTION_BASE,
+  PROJECTION_FIT,
+  type ObjectLoop,
+  type ObjectRenderer,
+  type ObjectWorkerRequest,
+  type ObjectWorkerResponse,
+  type ShapeData,
+} from "./morphing-object-gl";
 
-type ShapesModule = typeof import("./shapes");
-let shapesPromise: Promise<ShapesModule> | null = null;
-// Generating the point clouds costs tens of ms on slow phones, so the shapes
-// live in their own chunk that loads after hydration instead of blocking it.
-const loadShapes = () => (shapesPromise ??= import("./shapes"));
+// Rendering normally happens in morphing-object.worker.ts, which also builds
+// the point clouds, so the page itself does no per-frame work. The shapes are
+// only loaded on the main thread (lazily, in their own chunk) when one of the
+// fallbacks below has to draw here.
+let shapeDataPromise: Promise<ShapeData> | null = null;
+const loadShapeData = () =>
+  (shapeDataPromise ??= import("./shapes").then((mod) =>
+    flattenShapes(mod.ALL_SHAPES, mod.N_POINTS)
+  ));
 
 const NAV_HEIGHT = 46;
 const TOP_SAFE_OFFSET = NAV_HEIGHT + 18;
-const INITIAL_CANVAS_SIZE = 100;
-const MAX_DPR = 8; // anti-aliasing
-const DISTANCE = 360;
-const ROT_SPEED = 0.42;
-const TILT_BASE = 0.22;
-const TILT_SWAY = 0.07;
-const MORPH_DUR = 760;
+const MAX_DPR = 3;
 const SHAPE_CHANGE_DEBOUNCE_MS = 100;
-const DEPTH_BUCKETS = 8;
-const PARTICLE_COUNT = N_POINTS;
-const PARTICLE_RADIUS_MIN = 1;
-const PARTICLE_RADIUS_RANGE = 0.42;
-const PROJECTION_BASE = 0.34;
+const POSITION_EPSILON = 0.1;
+// prefers-reduced-motion: shapes cross-fade instead of morphing.
+const STILL_FADE_MS = 140;
 
 const SECTION_STOPS = [
   { id: "hero", shape: 0 },
@@ -39,16 +55,8 @@ const SECTION_STOPS = [
 
 type SectionStop = (typeof SECTION_STOPS)[number];
 
-interface ParticleState {
-  sx: Float32Array;
-  sy: Float32Array;
-  sz: Float32Array;
-  angleY: number;
-  lastTime: number;
-  currentShapeFrom: number;
+interface ObjectState {
   currentShapeTo: number;
-  morphStart: number;
-  morphT: number;
   currentX: number;
   currentY: number;
   targetX: number;
@@ -56,14 +64,126 @@ interface ParticleState {
   canvasSize: number;
 }
 
-function easeInOutCubic(t: number): number {
-  if (t < 0.5) return 4 * t * t * t;
-  return 1 - Math.pow(-2 * t + 2, 3) / 2;
+const noop = () => {};
+
+const clamp = (value: number, min: number, max: number) =>
+  Math.min(max, Math.max(min, value));
+
+function createCanvas(): HTMLCanvasElement {
+  const canvas = document.createElement("canvas");
+  canvas.setAttribute("aria-hidden", "true");
+  canvas.style.display = "block";
+  canvas.style.background = "transparent";
+  canvas.style.transition = `opacity ${STILL_FADE_MS}ms linear`;
+  return canvas;
+}
+
+/** Canvas 2D fallback, used when WebGL is unavailable or its context is lost. */
+function create2DRenderer(
+  canvas: HTMLCanvasElement,
+  { points, shapeCount }: ShapeData
+): ObjectRenderer | null {
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return null;
+
+  const stride = shapeCount * 3;
+  const count = points.length / stride;
+  // Reused every frame so drawing allocates nothing.
+  const sx = new Float32Array(count);
+  const sy = new Float32Array(count);
+  const sz = new Float32Array(count);
+  const buckets = Array.from({ length: DEPTH_BUCKETS }, () => [] as number[]);
+  let gradient: CanvasGradient | null = null;
+  let size = INITIAL_CANVAS_SIZE;
+
+  return {
+    resize(cssSize, dpr) {
+      size = cssSize;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      gradient = ctx.createLinearGradient(0, 0, size, size);
+      gradient.addColorStop(0, GRADIENT_STOPS[0]);
+      gradient.addColorStop(0.5, GRADIENT_STOPS[1]);
+      gradient.addColorStop(1, GRADIENT_STOPS[2]);
+    },
+    render(shapeFrom, shapeTo, t, angleY, angleX) {
+      const tiltCos = Math.cos(angleX);
+      const tiltSin = Math.sin(angleX);
+      const cosY = Math.cos(angleY);
+      const sinY = Math.sin(angleY);
+      const half = size * 0.5;
+      const sizeRatio = size / INITIAL_CANVAS_SIZE;
+      const projectionScale = PROJECTION_BASE * sizeRatio * PROJECTION_FIT;
+      const fromOffset = shapeFrom * 3;
+      const toOffset = shapeTo * 3;
+
+      let zMin = 1e9;
+      let zMax = -1e9;
+
+      for (let i = 0; i < count; i++) {
+        const from = i * stride + fromOffset;
+        const to = i * stride + toOffset;
+        const x = points[from] + (points[to] - points[from]) * t;
+        const y = points[from + 1] + (points[to + 1] - points[from + 1]) * t;
+        const z = points[from + 2] + (points[to + 2] - points[from + 2]) * t;
+
+        const y1 = y * tiltCos - z * tiltSin;
+        const z1 = y * tiltSin + z * tiltCos;
+        const x2 = x * cosY + z1 * sinY;
+        const z2 = -x * sinY + z1 * cosY;
+
+        const denominator = DISTANCE + z2;
+        const scale =
+          Math.abs(denominator) < 0.0001 ? 1 : DISTANCE / denominator;
+        sx[i] = half + x2 * scale * projectionScale;
+        sy[i] = half + y1 * scale * projectionScale;
+        sz[i] = z2;
+
+        if (z2 < zMin) zMin = z2;
+        if (z2 > zMax) zMax = z2;
+      }
+
+      ctx.clearRect(0, 0, size, size);
+
+      const zRange = zMax - zMin || 1;
+      for (let b = 0; b < DEPTH_BUCKETS; b++) buckets[b].length = 0;
+      for (let i = 0; i < count; i++) {
+        const normalized = (sz[i] - zMin) / zRange;
+        // Invert depth bucket mapping so near particles land in higher buckets:
+        // this keeps near points brighter and rendered on top.
+        const bucket = clamp(
+          Math.floor((1 - normalized) * DEPTH_BUCKETS),
+          0,
+          DEPTH_BUCKETS - 1
+        );
+        buckets[bucket].push(i);
+      }
+
+      if (gradient) ctx.fillStyle = gradient;
+      const radiusScale = Math.max(PARTICLE_RADIUS_FLOOR, sizeRatio);
+      for (let b = 0; b < DEPTH_BUCKETS; b++) {
+        const bucket = buckets[b];
+        if (!bucket.length) continue;
+        const depthNorm = b / (DEPTH_BUCKETS - 1);
+        const radius =
+          (PARTICLE_RADIUS_MIN + depthNorm * PARTICLE_RADIUS_RANGE) *
+          radiusScale;
+        ctx.globalAlpha = PARTICLE_ALPHA_MIN + depthNorm * PARTICLE_ALPHA_RANGE;
+        ctx.beginPath();
+        for (let i = 0; i < bucket.length; i++) {
+          const p = bucket[i];
+          ctx.moveTo(sx[p] + radius, sy[p]);
+          ctx.arc(sx[p], sy[p], radius, 0, Math.PI * 2);
+        }
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    },
+    dispose: noop,
+  };
 }
 
 export default function MorphingObject() {
   const pathname = usePathname();
-  const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const activeIndexRef = useRef(0);
   const sectionElsRef = useRef<Array<{ el: HTMLElement; stop: SectionStop }>>(
@@ -71,42 +191,49 @@ export default function MorphingObject() {
   );
   const pendingSectionIndexRef = useRef(0);
   const sectionChangeTimerRef = useRef<number | null>(null);
-  const stateRef = useRef<ParticleState>({
-    sx: new Float32Array(PARTICLE_COUNT),
-    sy: new Float32Array(PARTICLE_COUNT),
-    sz: new Float32Array(PARTICLE_COUNT),
-    angleY: 0,
-    lastTime: 0,
-    currentShapeFrom: 0,
+  const stateRef = useRef<ObjectState>({
     currentShapeTo: 0,
-    morphStart: 0,
-    morphT: 1,
     currentX: 12,
     currentY: TOP_SAFE_OFFSET,
     targetX: 12,
     targetY: TOP_SAFE_OFFSET,
     canvasSize: 100,
   });
+  // How the two effects talk: the renderer lives for the whole mount, the
+  // section tracking is rebuilt on every route change.
+  const linkRef = useRef({
+    onTargetChange: noop,
+    onShapeChange: noop,
+    syncWithViewport: noop,
+  });
 
+  // Rendering. In order of preference:
+  //   1. WebGL on an OffscreenCanvas in a worker (nothing per frame here),
+  //   2. WebGL on the main thread (no OffscreenCanvas/worker support),
+  //   3. Canvas 2D on the main thread (no WebGL, or its context was lost).
   useEffect(() => {
-    const canvas = canvasRef.current;
     const wrapper = wrapperRef.current;
-    if (!canvas || !wrapper) return;
-
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    if (!wrapper) return;
 
     const state = stateRef.current;
-    let animationFrameId = 0;
+    const link = linkRef.current;
+    const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let reducedMotion = motionQuery.matches;
+    let disposed = false;
     let resizeTimer = 0;
-    let shapes: ShapesModule | null = null;
-    let cancelled = false;
-    // Reused every frame so drawing allocates nothing.
-    const buckets = Array.from({ length: DEPTH_BUCKETS }, () => [] as number[]);
-    let gradient: CanvasGradient | null = null;
+    let fadeTimer = 0;
+    let dpr = 1;
+    let pixels = INITIAL_CANVAS_SIZE;
 
-    const clamp = (value: number, min: number, max: number) =>
-      Math.min(max, Math.max(min, value));
+    let worker: Worker | null = null;
+    let workerCanvas: HTMLCanvasElement | null = null;
+    // Main-thread fallbacks, created only when needed.
+    let localLoop: ObjectLoop | null = null;
+    let glCanvas: HTMLCanvasElement | null = null;
+    let glRenderer: ObjectRenderer | null = null;
+    let flatCanvas: HTMLCanvasElement | null = null;
+    let flatRenderer: ObjectRenderer | null = null;
+    let wantFlat = false;
 
     const getCanvasSize = () => {
       if (window.innerWidth < 420) return 64;
@@ -115,36 +242,286 @@ export default function MorphingObject() {
       return 100;
     };
 
-    const resizeCanvas = () => {
+    const measure = () => {
       state.canvasSize = getCanvasSize();
-      const dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR);
-      canvas.style.width = `${state.canvasSize}px`;
-      canvas.style.height = `${state.canvasSize}px`;
-      canvas.width = Math.round(state.canvasSize * dpr);
-      canvas.height = Math.round(state.canvasSize * dpr);
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      dpr = Math.min(window.devicePixelRatio || 1, MAX_DPR);
+      pixels = Math.round(state.canvasSize * dpr);
       wrapper.style.width = `${state.canvasSize}px`;
       wrapper.style.height = `${state.canvasSize}px`;
-      gradient = ctx.createLinearGradient(
-        0,
-        0,
-        state.canvasSize,
-        state.canvasSize
-      );
-      gradient.addColorStop(0, "#8fb6d2");
-      gradient.addColorStop(0.5, "#f3f5f8");
-      gradient.addColorStop(1, "#8ea0b2");
     };
 
-    const morphToSection = (sectionIndex: number, now: number) => {
+    const styleCanvas = (canvas: HTMLCanvasElement) => {
+      canvas.style.width = `${state.canvasSize}px`;
+      canvas.style.height = `${state.canvasSize}px`;
+    };
+
+    // For canvases drawn on this thread; the worker sizes its own.
+    const sizeLocalCanvas = (
+      canvas: HTMLCanvasElement | null,
+      renderer: ObjectRenderer | null
+    ) => {
+      if (!canvas) return;
+      styleCanvas(canvas);
+      if (canvas.width !== pixels) canvas.width = pixels;
+      if (canvas.height !== pixels) canvas.height = pixels;
+      renderer?.resize(state.canvasSize, dpr);
+    };
+
+    const show = (canvas: HTMLCanvasElement) => {
+      canvas.style.opacity = "1";
+      if (canvas.parentNode !== wrapper) wrapper.replaceChildren(canvas);
+    };
+
+    const send = (message: ObjectWorkerRequest, transfer?: Transferable[]) =>
+      worker?.postMessage(message, transfer ?? []);
+
+    const setShape = (shape: number) => {
+      send({ type: "shape", shape });
+      localLoop?.setShape(shape);
+    };
+
+    const getLocalLoop = () =>
+      (localLoop ??= createObjectLoop(state.currentShapeTo, reducedMotion));
+
+    const drawFlat = () => {
+      wantFlat = true;
+      loadShapeData().then((shapeData) => {
+        if (disposed || !wantFlat) return;
+        flatCanvas ??= createCanvas();
+        flatRenderer ??= create2DRenderer(flatCanvas, shapeData);
+        sizeLocalCanvas(flatCanvas, flatRenderer);
+        getLocalLoop().setRenderer(flatRenderer);
+        show(flatCanvas);
+      });
+    };
+
+    const startLocalGL = (shapeData: ShapeData) => {
+      if (!glCanvas) return false;
+      glRenderer = createGLRenderer(glCanvas, shapeData);
+      if (!glRenderer) return false;
+      wantFlat = false;
+      sizeLocalCanvas(glCanvas, glRenderer);
+      getLocalLoop().setRenderer(glRenderer);
+      show(glCanvas);
+      return true;
+    };
+
+    const onLocalContextLost = (event: Event) => {
+      event.preventDefault(); // lets the browser restore it later
+      glRenderer = null;
+      drawFlat();
+    };
+
+    const onLocalContextRestored = () => {
+      loadShapeData().then((shapeData) => {
+        if (!disposed) startLocalGL(shapeData);
+      });
+    };
+
+    const drawOnMainThread = () => {
+      worker?.terminate();
+      worker = null;
+      workerCanvas = null;
+      loadShapeData().then((shapeData) => {
+        if (disposed) return;
+        glCanvas = createCanvas();
+        glCanvas.addEventListener("webglcontextlost", onLocalContextLost);
+        glCanvas.addEventListener(
+          "webglcontextrestored",
+          onLocalContextRestored
+        );
+        if (!startLocalGL(shapeData)) drawFlat();
+      });
+    };
+
+    const onWorkerMessage = ({ data }: MessageEvent<ObjectWorkerResponse>) => {
+      if (data.type === "ready") {
+        wantFlat = false;
+        localLoop?.setRenderer(null);
+        if (workerCanvas) show(workerCanvas);
+      } else if (data.type === "lost") {
+        drawFlat();
+      } else {
+        drawOnMainThread();
+      }
+    };
+
+    const startWorker = () => {
+      if (
+        typeof Worker === "undefined" ||
+        typeof OffscreenCanvas === "undefined" ||
+        !("transferControlToOffscreen" in HTMLCanvasElement.prototype)
+      ) {
+        return false;
+      }
+      try {
+        const canvas = createCanvas();
+        styleCanvas(canvas);
+        const offscreen = canvas.transferControlToOffscreen();
+        worker = new Worker(
+          new URL("./morphing-object.worker.ts", import.meta.url)
+        );
+        worker.onmessage = onWorkerMessage;
+        worker.onerror = drawOnMainThread;
+        workerCanvas = canvas;
+        send(
+          {
+            type: "init",
+            canvas: offscreen,
+            pixels,
+            cssSize: state.canvasSize,
+            dpr,
+            shape: state.currentShapeTo,
+            reducedMotion,
+          },
+          [offscreen]
+        );
+        wrapper.replaceChildren(canvas);
+        return true;
+      } catch {
+        worker?.terminate();
+        worker = null;
+        workerCanvas = null;
+        return false;
+      }
+    };
+
+    const resize = () => {
+      measure();
+      if (workerCanvas) styleCanvas(workerCanvas);
+      send({ type: "resize", pixels, cssSize: state.canvasSize, dpr });
+      sizeLocalCanvas(glCanvas, glRenderer);
+      sizeLocalCanvas(flatCanvas, flatRenderer);
+      localLoop?.invalidate();
+    };
+
+    const setCanvasOpacity = (opacity: string) => {
+      if (workerCanvas) workerCanvas.style.opacity = opacity;
+      if (glCanvas) glCanvas.style.opacity = opacity;
+      if (flatCanvas) flatCanvas.style.opacity = opacity;
+    };
+
+    const onShapeChange = () => {
+      if (!reducedMotion) {
+        setShape(state.currentShapeTo);
+        return;
+      }
+      // Reduced motion: fade out, swap the still frame, fade back in.
+      setCanvasOpacity("0");
+      window.clearTimeout(fadeTimer);
+      fadeTimer = window.setTimeout(() => {
+        setShape(state.currentShapeTo);
+        setCanvasOpacity("1");
+      }, STILL_FADE_MS);
+    };
+
+    const onMotionPreferenceChange = () => {
+      reducedMotion = motionQuery.matches;
+      window.clearTimeout(fadeTimer);
+      send({ type: "motion", reducedMotion });
+      localLoop?.setReducedMotion(reducedMotion);
+      setShape(state.currentShapeTo);
+      setCanvasOpacity("1");
+      requestPosition();
+    };
+
+    // The wrapper glides to its target in a loop that only runs while it is
+    // actually moving; once settled, nothing touches the DOM.
+    let positionFrameId = 0;
+    let positionTime = 0;
+    let appliedX = Number.NaN;
+    let appliedY = Number.NaN;
+
+    const positionFrame = (ts: number) => {
+      positionFrameId = 0;
+      const dx = state.targetX - state.currentX;
+      const dy = state.targetY - state.currentY;
+      const dt = positionTime ? clamp((ts - positionTime) / 1000, 0, 0.05) : 0;
+      if (
+        reducedMotion ||
+        (Math.abs(dx) < POSITION_EPSILON && Math.abs(dy) < POSITION_EPSILON)
+      ) {
+        state.currentX = state.targetX;
+        state.currentY = state.targetY;
+      } else {
+        const posLerp = Math.min(1, dt * 10);
+        state.currentX += dx * posLerp;
+        state.currentY += dy * posLerp;
+      }
+      if (state.currentX !== appliedX || state.currentY !== appliedY) {
+        appliedX = state.currentX;
+        appliedY = state.currentY;
+        wrapper.style.transform = `translate3d(${appliedX}px, ${appliedY}px, 0)`;
+      }
+      if (
+        state.currentX === state.targetX &&
+        state.currentY === state.targetY
+      ) {
+        positionTime = 0;
+        return;
+      }
+      positionTime = ts;
+      positionFrameId = window.requestAnimationFrame(positionFrame);
+    };
+
+    const requestPosition = () => {
+      if (positionFrameId) return;
+      if (state.targetX === appliedX && state.targetY === appliedY) return;
+      positionFrameId = window.requestAnimationFrame(positionFrame);
+    };
+
+    const onResize = () => {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => {
+        resize();
+        link.syncWithViewport();
+      }, 60);
+    };
+
+    measure();
+    link.onTargetChange = requestPosition;
+    link.onShapeChange = onShapeChange;
+    if (!startWorker()) drawOnMainThread();
+
+    motionQuery.addEventListener("change", onMotionPreferenceChange);
+    window.addEventListener("resize", onResize);
+
+    return () => {
+      disposed = true;
+      window.cancelAnimationFrame(positionFrameId);
+      window.clearTimeout(resizeTimer);
+      window.clearTimeout(fadeTimer);
+      motionQuery.removeEventListener("change", onMotionPreferenceChange);
+      window.removeEventListener("resize", onResize);
+      link.onTargetChange = noop;
+      link.onShapeChange = noop;
+      worker?.terminate();
+      localLoop?.stop();
+      glCanvas?.removeEventListener("webglcontextlost", onLocalContextLost);
+      glCanvas?.removeEventListener(
+        "webglcontextrestored",
+        onLocalContextRestored
+      );
+      glRenderer?.dispose();
+      wrapper.replaceChildren();
+    };
+  }, []);
+
+  // Section tracking: which shape to show and where the object sits.
+  useEffect(() => {
+    const wrapper = wrapperRef.current;
+    if (!wrapper) return;
+
+    const state = stateRef.current;
+    const link = linkRef.current;
+
+    const morphToSection = (sectionIndex: number) => {
       if (sectionIndex === activeIndexRef.current) return;
       const target = sectionElsRef.current[sectionIndex];
       if (!target) return;
       activeIndexRef.current = sectionIndex;
-      state.currentShapeFrom = state.currentShapeTo;
       state.currentShapeTo = target.stop.shape;
-      state.morphStart = now;
-      state.morphT = 0;
+      link.onShapeChange();
     };
 
     const queueMorphToSection = (sectionIndex: number) => {
@@ -165,7 +542,7 @@ export default function MorphingObject() {
       }
 
       sectionChangeTimerRef.current = window.setTimeout(() => {
-        morphToSection(pendingSectionIndexRef.current, performance.now());
+        morphToSection(pendingSectionIndexRef.current);
         sectionChangeTimerRef.current = null;
       }, SHAPE_CHANGE_DEBOUNCE_MS);
     };
@@ -249,155 +626,32 @@ export default function MorphingObject() {
       const nextIdx = findActiveSectionIndex();
       queueMorphToSection(nextIdx);
       positionWrapperAtSection(nextIdx);
+      link.onTargetChange();
     };
 
     const onScroll = () => {
       syncWithViewport();
     };
 
-    const onResize = () => {
-      window.clearTimeout(resizeTimer);
-      resizeTimer = window.setTimeout(() => {
-        resizeCanvas();
-        syncWithViewport();
-      }, 60);
-    };
-
-    const draw = (ts: number) => {
-      if (!shapes) return;
-      const { ALL_SHAPES_X, ALL_SHAPES_Y, ALL_SHAPES_Z } = shapes;
-      const dt = Math.min((ts - state.lastTime) / 1000, 0.05);
-      state.lastTime = ts;
-      state.angleY += ROT_SPEED * dt;
-      const posLerp = Math.min(1, dt * 10);
-      state.currentX += (state.targetX - state.currentX) * posLerp;
-      state.currentY += (state.targetY - state.currentY) * posLerp;
-      wrapper.style.transform = `translate3d(${state.currentX}px, ${state.currentY}px, 0)`;
-
-      const rawMorph = clamp((ts - state.morphStart) / MORPH_DUR, 0, 1);
-      state.morphT = easeInOutCubic(rawMorph);
-
-      const t = state.morphT;
-      const shapeFrom = state.currentShapeFrom;
-      const shapeTo = state.currentShapeTo;
-      const angleX = TILT_BASE + Math.sin(ts * 0.00035) * TILT_SWAY;
-      const tiltCos = Math.cos(angleX);
-      const tiltSin = Math.sin(angleX);
-      const cosY = Math.cos(state.angleY);
-      const sinY = Math.sin(state.angleY);
-      const HW = state.canvasSize * 0.5;
-      const HH = state.canvasSize * 0.5;
-      const sizeRatio = state.canvasSize / INITIAL_CANVAS_SIZE;
-      const projectionScale = PROJECTION_BASE * sizeRatio * 0.96;
-
-      let zMin = 1e9;
-      let zMax = -1e9;
-
-      for (let i = 0; i < PARTICLE_COUNT; i++) {
-        const pointX = ALL_SHAPES_X[i];
-        const pointY = ALL_SHAPES_Y[i];
-        const pointZ = ALL_SHAPES_Z[i];
-
-        const fromX = pointX ? pointX[shapeFrom] : 0;
-        const fromY = pointY ? pointY[shapeFrom] : 0;
-        const fromZ = pointZ ? pointZ[shapeFrom] : 0;
-        const toX = pointX ? pointX[shapeTo] : 0;
-        const toY = pointY ? pointY[shapeTo] : 0;
-        const toZ = pointZ ? pointZ[shapeTo] : 0;
-
-        const x = fromX + (toX - fromX) * t;
-        const y = fromY + (toY - fromY) * t;
-        const z = fromZ + (toZ - fromZ) * t;
-
-        const y1 = y * tiltCos - z * tiltSin;
-        const z1 = y * tiltSin + z * tiltCos;
-        const x2 = x * cosY + z1 * sinY;
-        const z2 = -x * sinY + z1 * cosY;
-
-        const denominator = DISTANCE + z2;
-        const scale =
-          Math.abs(denominator) < 0.0001 ? 1 : DISTANCE / denominator;
-        const sx = HW + x2 * scale * projectionScale;
-        const sy = HH + y1 * scale * projectionScale;
-        const safeZ = Number.isFinite(z2) ? z2 : 0;
-
-        state.sx[i] = Number.isFinite(sx) ? sx : HW;
-        state.sy[i] = Number.isFinite(sy) ? sy : HH;
-        state.sz[i] = safeZ;
-
-        if (safeZ < zMin) zMin = safeZ;
-        if (safeZ > zMax) zMax = safeZ;
-      }
-
-      ctx.clearRect(0, 0, state.canvasSize, state.canvasSize);
-
-      const zRange = zMax - zMin || 1;
-      for (let b = 0; b < DEPTH_BUCKETS; b++) buckets[b].length = 0;
-      for (let i = 0; i < PARTICLE_COUNT; i++) {
-        const normalized = (state.sz[i] - zMin) / zRange;
-        // Invert depth bucket mapping so near particles land in higher buckets:
-        // this keeps near points brighter and rendered on top.
-        const rawBucket = Math.floor((1 - normalized) * DEPTH_BUCKETS);
-        const bucket = Number.isFinite(rawBucket)
-          ? clamp(rawBucket, 0, DEPTH_BUCKETS - 1)
-          : 0;
-        buckets[bucket]?.push(i);
-      }
-
-      if (gradient) ctx.fillStyle = gradient;
-      // Temporarily disable additive glow blending.
-      // ctx.globalCompositeOperation = 'lighter';
-      ctx.globalCompositeOperation = "source-over";
-      for (let b = 0; b < DEPTH_BUCKETS; b++) {
-        const bucket = buckets[b];
-        if (!bucket.length) continue;
-        const depthNorm = b / (DEPTH_BUCKETS - 1);
-        const radiusScale = Math.max(0.72, sizeRatio);
-        const radius =
-          (PARTICLE_RADIUS_MIN + depthNorm * PARTICLE_RADIUS_RANGE) *
-          radiusScale;
-        const alpha = 0.12 + depthNorm * 0.58;
-        ctx.globalAlpha = alpha;
-        ctx.beginPath();
-        for (let i = 0; i < bucket.length; i++) {
-          const p = bucket[i];
-          ctx.moveTo(state.sx[p] + radius, state.sy[p]);
-          ctx.arc(state.sx[p], state.sy[p], radius, 0, Math.PI * 2);
-        }
-        ctx.fill();
-      }
-
-      ctx.globalAlpha = 1;
-      ctx.globalCompositeOperation = "source-over";
-      animationFrameId = window.requestAnimationFrame(draw);
-    };
-
+    link.syncWithViewport = syncWithViewport;
     refreshSectionElements();
-    resizeCanvas();
     pendingSectionIndexRef.current = activeIndexRef.current;
     syncWithViewport();
     // Route transitions can briefly render before section ids are mounted.
     // Re-sync once on the next frame to avoid falling back to top-left.
-    window.requestAnimationFrame(() => {
+    const resyncFrameId = window.requestAnimationFrame(() => {
       refreshSectionElements();
       syncWithViewport();
     });
-    loadShapes().then((mod) => {
-      if (cancelled) return;
-      shapes = mod;
-      animationFrameId = window.requestAnimationFrame(draw);
-    });
     window.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onResize);
 
     return () => {
-      cancelled = true;
-      window.cancelAnimationFrame(animationFrameId);
+      window.cancelAnimationFrame(resyncFrameId);
       window.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onResize);
-      window.clearTimeout(resizeTimer);
+      link.syncWithViewport = noop;
       if (sectionChangeTimerRef.current !== null) {
         window.clearTimeout(sectionChangeTimerRef.current);
+        sectionChangeTimerRef.current = null;
       }
     };
   }, [pathname]);
@@ -412,16 +666,6 @@ export default function MorphingObject() {
         opacity: 0,
         willChange: "transform",
       }}
-    >
-      <canvas
-        ref={canvasRef}
-        style={{
-          width: `${INITIAL_CANVAS_SIZE}px`,
-          height: `${INITIAL_CANVAS_SIZE}px`,
-          display: "block",
-          background: "transparent",
-        }}
-      />
-    </div>
+    />
   );
 }

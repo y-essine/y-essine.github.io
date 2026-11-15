@@ -36,3 +36,10 @@ body {
   text-rendering: optimizeLegibility;
   font-feature-settings: "blwf" 1, "cv09" 1, "cv03" 1, "cv04" 1, "cv11" 1;
 }
+
+/* iOS draws a big play button over videos that can't autoplay (Low Power
+   Mode). Preview videos are decorative, so keep just the poster. */
+video::-webkit-media-controls-start-playback-button {
+  display: none !important;
+  -webkit-appearance: none;
+}
