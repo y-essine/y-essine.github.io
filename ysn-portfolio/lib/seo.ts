@@ -50,7 +50,6 @@ export function generateMetadata(config: SEOConfig): Metadata {
       card: "summary_large_image",
       title,
       description,
-      creator: "@pimplerousse",
     },
     robots: {
       index: true,

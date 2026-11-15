@@ -57,7 +57,6 @@ export const metadata: Metadata = {
     title: "Yassine Karoui - Product Engineer & Fullstack Builder",
     description:
       "Product Engineer & Fullstack Builder. I design and ship useful, fast, elegant web products from idea to production.",
-    creator: "@yassine_karoui",
   },
   icons: {
     icon: [
