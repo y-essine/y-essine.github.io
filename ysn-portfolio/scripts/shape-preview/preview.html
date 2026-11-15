@@ -1,0 +1,113 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Shape preview</title>
+<!-- Static contact sheet of the morphing-object shapes. The draw() below
+     mirrors components/morphing-object.tsx; keep them in sync if the
+     renderer changes. Query: ?only=mail,heart  ?big=300  ?morph=0 -->
+<style>
+  body { margin: 0; padding: 16px; background: #101011; color: #9aa3ad;
+         font: 12px/1.3 ui-monospace, monospace; }
+  .row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .label { width: 70px; text-align: right; color: #e6e9ee; }
+  .cell { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  canvas { background: #101011; outline: 1px solid #1e1f22; }
+  h3 { color: #e6e9ee; font-weight: normal; margin: 18px 0 8px 80px; }
+</style>
+<body>
+<script src="out/shapes.js"></script>
+<script>
+const P = new URLSearchParams(location.search);
+const BIG = +(P.get("big") || 220);
+const ONLY = P.get("only")?.split(",");
+const SHOW_MORPH = P.get("morph") !== "0";
+
+// --- constants copied from morphing-object.tsx ---
+const DISTANCE = 360, TILT_BASE = 0.22, DEPTH_BUCKETS = 8;
+const PARTICLE_RADIUS_MIN = 1, PARTICLE_RADIUS_RANGE = 0.42, PROJECTION_BASE = 0.34;
+const INITIAL_CANVAS_SIZE = 100;
+
+// Draws one frame. `size` is the CSS canvas size the site would use; `zoom`
+// enlarges the whole canvas for inspection without changing the proportions.
+function draw(canvas, pts, angleY, angleX, size, zoom) {
+  const dpr = 2 * zoom;
+  canvas.width = canvas.height = Math.round(size * dpr);
+  canvas.style.width = canvas.style.height = `${size * zoom}px`;
+  const ctx = canvas.getContext("2d");
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const HW = size / 2, sizeRatio = size / INITIAL_CANVAS_SIZE;
+  const proj = PROJECTION_BASE * sizeRatio * 0.96;
+  const tc = Math.cos(angleX), ts = Math.sin(angleX);
+  const cy = Math.cos(angleY), sy = Math.sin(angleY);
+  const sx = [], syy = [], sz = [];
+  let zMin = 1e9, zMax = -1e9;
+  for (const [x, y, z] of pts) {
+    const y1 = y * tc - z * ts, z1 = y * ts + z * tc;
+    const x2 = x * cy + z1 * sy, z2 = -x * sy + z1 * cy;
+    const s = DISTANCE / (DISTANCE + z2);
+    sx.push(HW + x2 * s * proj); syy.push(HW + y1 * s * proj); sz.push(z2);
+    zMin = Math.min(zMin, z2); zMax = Math.max(zMax, z2);
+  }
+  const g = ctx.createLinearGradient(0, 0, size, size);
+  g.addColorStop(0, "#8fb6d2"); g.addColorStop(0.5, "#f3f5f8"); g.addColorStop(1, "#8ea0b2");
+  const zr = zMax - zMin || 1;
+  const buckets = Array.from({ length: DEPTH_BUCKETS }, () => []);
+  sz.forEach((z, i) => {
+    const b = Math.min(DEPTH_BUCKETS - 1, Math.max(0, Math.floor((1 - (z - zMin) / zr) * DEPTH_BUCKETS)));
+    buckets[b].push(i);
+  });
+  ctx.fillStyle = g;
+  buckets.forEach((bucket, b) => {
+    const dn = b / (DEPTH_BUCKETS - 1);
+    const r = (PARTICLE_RADIUS_MIN + dn * PARTICLE_RADIUS_RANGE) * Math.max(0.72, sizeRatio);
+    ctx.globalAlpha = 0.12 + dn * 0.58;
+    ctx.beginPath();
+    for (const i of bucket) { ctx.moveTo(sx[i] + r, syy[i]); ctx.arc(sx[i], syy[i], r, 0, Math.PI * 2); }
+    ctx.fill();
+  });
+}
+
+function cell(parent, caption, fn) {
+  const c = document.createElement("div"); c.className = "cell";
+  const cv = document.createElement("canvas"); fn(cv);
+  const t = document.createElement("div"); t.textContent = caption;
+  c.append(cv, t); parent.append(c);
+}
+function row(label) {
+  const r = document.createElement("div"); r.className = "row";
+  const l = document.createElement("div"); l.className = "label"; l.textContent = label;
+  r.append(l); document.body.append(r); return r;
+}
+const lerp = (a, b, t) => a.map((p, i) => p.map((v, k) => v + (b[i][k] - v) * t));
+const ease = (t) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+
+const zoom = BIG / 100;
+const shapes = window.SHAPES.filter((s) => !ONLY || ONLY.includes(s.name));
+const h = document.createElement("h3");
+h.textContent = `views at ${BIG}px zoom (rotation shown under each) · last two columns = real on-site size (100px desktop, 64px phone)`;
+document.body.append(h);
+for (const s of shapes) {
+  const r = row(s.name);
+  for (const deg of [0, 35, 90, 150, 215]) {
+    cell(r, `${deg}°`, (cv) => draw(cv, s.points, (deg * Math.PI) / 180, TILT_BASE, 100, zoom));
+  }
+  cell(r, "100px", (cv) => draw(cv, s.points, 0.6, TILT_BASE, 100, 1));
+  cell(r, "64px", (cv) => draw(cv, s.points, 0.6, TILT_BASE, 64, 1));
+}
+
+if (SHOW_MORPH) {
+  // Transitions the site actually performs when scrolling top to bottom.
+  const byName = Object.fromEntries(window.SHAPES.map((s) => [s.name, s.points]));
+  const seq = ["sphere", "cube", "torus", "sphere", "heart", "kanji", "mail"];
+  const h2 = document.createElement("h3"); h2.textContent = "morphs in scroll order (eased t)";
+  document.body.append(h2);
+  for (let i = 0; i < seq.length - 1; i++) {
+    const [a, b] = [seq[i], seq[i + 1]];
+    if (ONLY && !ONLY.includes(a) && !ONLY.includes(b)) continue;
+    const r = row(`${a}→${b}`);
+    for (const t of [0, 0.2, 0.4, 0.5, 0.6, 0.8, 1]) {
+      cell(r, `t=${t}`, (cv) => draw(cv, lerp(byName[a], byName[b], ease(t)), 0.6 + t * 0.3, TILT_BASE, 100, 1.3));
+    }
+  }
+}
+document.title = "ready";
+</script>

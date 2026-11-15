@@ -2,7 +2,13 @@
 
 import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
-import { N_POINTS, ALL_SHAPES_X, ALL_SHAPES_Y, ALL_SHAPES_Z } from "./shapes";
+import { N_POINTS } from "./shapes/constants";
+
+type ShapesModule = typeof import("./shapes");
+let shapesPromise: Promise<ShapesModule> | null = null;
+// Generating the point clouds costs tens of ms on slow phones, so the shapes
+// live in their own chunk that loads after hydration instead of blocking it.
+const loadShapes = () => (shapesPromise ??= import("./shapes"));
 
 const NAV_HEIGHT = 46;
 const TOP_SAFE_OFFSET = NAV_HEIGHT + 18;
@@ -93,6 +99,11 @@ export default function MorphingObject() {
     const state = stateRef.current;
     let animationFrameId = 0;
     let resizeTimer = 0;
+    let shapes: ShapesModule | null = null;
+    let cancelled = false;
+    // Reused every frame so drawing allocates nothing.
+    const buckets = Array.from({ length: DEPTH_BUCKETS }, () => [] as number[]);
+    let gradient: CanvasGradient | null = null;
 
     const clamp = (value: number, min: number, max: number) =>
       Math.min(max, Math.max(min, value));
@@ -114,6 +125,15 @@ export default function MorphingObject() {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       wrapper.style.width = `${state.canvasSize}px`;
       wrapper.style.height = `${state.canvasSize}px`;
+      gradient = ctx.createLinearGradient(
+        0,
+        0,
+        state.canvasSize,
+        state.canvasSize
+      );
+      gradient.addColorStop(0, "#8fb6d2");
+      gradient.addColorStop(0.5, "#f3f5f8");
+      gradient.addColorStop(1, "#8ea0b2");
     };
 
     const morphToSection = (sectionIndex: number, now: number) => {
@@ -161,7 +181,14 @@ export default function MorphingObject() {
       const sections = sectionElsRef.current;
       if (!sections.length) return 0;
 
-      const probeY = window.innerHeight * 0.42;
+      // Over the last half-screen of scroll the probe slides toward the bottom
+      // edge, so a short final section (contact) still activates on tall
+      // desktop viewports where it never reaches the 42% line.
+      const vh = window.innerHeight;
+      const remaining =
+        document.documentElement.scrollHeight - window.scrollY - vh;
+      const endBlend = clamp(1 - remaining / (vh * 0.5), 0, 1);
+      const probeY = vh * (0.42 + endBlend * 0.53);
       let bestIdx = 0;
       let bestDistance = Number.POSITIVE_INFINITY;
 
@@ -237,6 +264,8 @@ export default function MorphingObject() {
     };
 
     const draw = (ts: number) => {
+      if (!shapes) return;
+      const { ALL_SHAPES_X, ALL_SHAPES_Y, ALL_SHAPES_Z } = shapes;
       const dt = Math.min((ts - state.lastTime) / 1000, 0.05);
       state.lastTime = ts;
       state.angleY += ROT_SPEED * dt;
@@ -302,21 +331,8 @@ export default function MorphingObject() {
 
       ctx.clearRect(0, 0, state.canvasSize, state.canvasSize);
 
-      const gradient = ctx.createLinearGradient(
-        0,
-        0,
-        state.canvasSize,
-        state.canvasSize
-      );
-      gradient.addColorStop(0, "#8fb6d2");
-      gradient.addColorStop(0.5, "#f3f5f8");
-      gradient.addColorStop(1, "#8ea0b2");
-
       const zRange = zMax - zMin || 1;
-      const buckets = Array.from(
-        { length: DEPTH_BUCKETS },
-        () => [] as number[]
-      );
+      for (let b = 0; b < DEPTH_BUCKETS; b++) buckets[b].length = 0;
       for (let i = 0; i < PARTICLE_COUNT; i++) {
         const normalized = (state.sz[i] - zMin) / zRange;
         // Invert depth bucket mapping so near particles land in higher buckets:
@@ -328,7 +344,7 @@ export default function MorphingObject() {
         buckets[bucket]?.push(i);
       }
 
-      ctx.fillStyle = gradient;
+      if (gradient) ctx.fillStyle = gradient;
       // Temporarily disable additive glow blending.
       // ctx.globalCompositeOperation = 'lighter';
       ctx.globalCompositeOperation = "source-over";
@@ -366,11 +382,16 @@ export default function MorphingObject() {
       refreshSectionElements();
       syncWithViewport();
     });
-    animationFrameId = window.requestAnimationFrame(draw);
+    loadShapes().then((mod) => {
+      if (cancelled) return;
+      shapes = mod;
+      animationFrameId = window.requestAnimationFrame(draw);
+    });
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onResize);
 
     return () => {
+      cancelled = true;
       window.cancelAnimationFrame(animationFrameId);
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onResize);

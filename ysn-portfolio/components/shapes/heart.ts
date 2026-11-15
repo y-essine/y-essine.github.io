@@ -1,35 +1,19 @@
 import { N_POINTS } from './constants';
+import { HEART_DATA } from './heart_data';
 import { type Point3D } from './types';
-import { fibonacciPoint, normalizeShape } from './utils';
+import { normalizeShape, orderForMorph } from './utils';
 
-// Heart - starts from Fibonacci sphere, deforms into heart
-const generateHeartPoints = (scale: number): Point3D[] => {
+// Heart - a puffy 3D heart with evenly spread points. The even spread is
+// expensive to compute, so it is baked offline into heart_data.ts
+// (see scripts/shape-preview/gen-heart.mjs) and only unpacked here.
+const generateHeartPoints = (): Point3D[] => {
   const points: Point3D[] = [];
   for (let i = 0; i < N_POINTS; i++) {
-    const { theta, phi } = fibonacciPoint(i, N_POINTS);
-
-    // Use same angular coordinates as sphere
-    const u = theta;
-    const v = phi;
-    const sinV = Math.sin(v);
-
-    // Heart surface with same angular correspondence
-    const hx = sinV * (15 * Math.sin(u) - 4 * Math.sin(3 * u));
-    const hz = 8 * Math.cos(v);
-    const hy =
-      sinV *
-      (15 * Math.cos(u) -
-        5 * Math.cos(2 * u) -
-        2 * Math.cos(3 * u) -
-        Math.cos(4 * u));
-
-    points.push({
-      x: hx * scale * 0.06,
-      y: -hy * scale * 0.06,
-      z: hz * scale * 0.06,
-    });
+    // Wraps around if N_POINTS ever exceeds the baked count.
+    const k = (i * 3) % HEART_DATA.length;
+    points.push({ x: HEART_DATA[k], y: HEART_DATA[k + 1], z: HEART_DATA[k + 2] });
   }
   return points;
 };
 
-export const HEART_POINTS = normalizeShape(generateHeartPoints(120));
+export const HEART_POINTS = orderForMorph(normalizeShape(generateHeartPoints()));

@@ -1,116 +1,74 @@
-import { N_POINTS } from "./constants";
-import { type Point3D } from "./types";
-import { normalizeShape, scaleShape } from "./utils";
+import { N_POINTS } from './constants';
+import { type Point3D } from './types';
+import { normalizeShape, orderForMorph, scaleShape } from './utils';
 
-// Mail/Envelope - Unified envelope with integrated flap on body
+// Envelope proportions (y up while building, flipped to screen space at the end).
+const HALF_W = 0.75;
+const HALF_H = 0.5;
+const HALF_D = 0.075;
+const FLAP_TIP_Y = -0.1; // where the V of the flap meets, just below centre
+
+type P2 = [number, number];
+
+// `count` points evenly spaced along a polyline (end points included unless
+// `open` trims them, used where another line already owns the corner).
+const alongPath = (path: P2[], count: number, z: number, closed = false, trim = 0): Point3D[] => {
+  const pts = closed ? [...path, path[0]] : path;
+  const lengths: number[] = [];
+  let total = 0;
+  for (let i = 1; i < pts.length; i++) {
+    const l = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]);
+    lengths.push(l);
+    total += l;
+  }
+  const out: Point3D[] = [];
+  for (let k = 0; k < count; k++) {
+    const f = closed ? k / count : count === 1 ? 0.5 : trim + ((1 - 2 * trim) * k) / (count - 1);
+    let d = f * total;
+    let seg = 0;
+    while (seg < lengths.length - 1 && d > lengths[seg]) d -= lengths[seg++];
+    const t = lengths[seg] ? d / lengths[seg] : 0;
+    out.push({
+      x: pts[seg][0] + (pts[seg + 1][0] - pts[seg][0]) * t,
+      y: pts[seg][1] + (pts[seg + 1][1] - pts[seg][1]) * t,
+      z,
+    });
+  }
+  return out;
+};
+
+// Mail - a closed envelope: a thin slab outlined on both faces, with the V of
+// the flap and the two lower folds drawn on it.
 const generateMailPoints = (): Point3D[] => {
+  const outline: P2[] = [
+    [-HALF_W, HALF_H],
+    [HALF_W, HALF_H],
+    [HALF_W, -HALF_H],
+    [-HALF_W, -HALF_H],
+  ];
   const points: Point3D[] = [];
 
-  // Envelope proportions
-  const w = 1.0;      // width
-  const h = 0.65;     // height
-  const d = 0.15;     // depth
-  const flapH = 0.45; // flap height extension above body top
+  // Both faces carry the same drawing, so it reads from either side.
+  const tip: P2 = [0, FLAP_TIP_Y];
+  for (const z of [HALF_D, -HALF_D]) {
+    points.push(...alongPath(outline, 106, z, true));
 
-  // Front rectangular body (closed envelope)
-  const bodyFrontPoints = 90;
-  for (let i = 0; i < bodyFrontPoints && points.length < N_POINTS; i++) {
-    const u = (i % 11) / 10;
-    const v = Math.floor(i / 11) / (Math.ceil(bodyFrontPoints / 11) - 1);
-    points.push({
-      x: (u - 0.5) * w,
-      y: (v - 0.5) * h,
-      z: d,
-    });
-  }
+    // Flap: the V, drawn as a double line so it is the strongest feature.
+    points.push(...alongPath([[-HALF_W, HALF_H], tip, [HALF_W, HALF_H]], 47, z, false, 0.02));
+    points.push(
+      ...alongPath([[-HALF_W + 0.09, HALF_H], [0, FLAP_TIP_Y + 0.07], [HALF_W - 0.09, HALF_H]], 39, z, false, 0.03),
+    );
 
-  // Back rectangular body
-  const bodyBackPoints = 90;
-  for (let i = 0; i < bodyBackPoints && points.length < N_POINTS; i++) {
-    const u = (i % 11) / 10;
-    const v = Math.floor(i / 11) / (Math.ceil(bodyBackPoints / 11) - 1);
-    points.push({
-      x: (u - 0.5) * w,
-      y: (v - 0.5) * h,
-      z: -d,
-    });
-  }
-
-  // Left and right sides of body
-  const sideFrontPoints = 50;
-  for (let i = 0; i < sideFrontPoints && points.length < N_POINTS; i++) {
-    const v = i / (sideFrontPoints - 1);
-    const z = -d + (2 * d * v);
-    points.push({
-      x: -w / 2,
-      y: (v - 0.5) * h,
-      z: z,
-    });
-    if (points.length < N_POINTS) {
-      points.push({
-        x: w / 2,
-        y: (v - 0.5) * h,
-        z: z,
-      });
+    // Lower folds: from the bottom corners up towards the flap, stopping short.
+    for (const side of [-1, 1]) {
+      const corner: P2 = [side * HALF_W, -HALF_H];
+      const end: P2 = [side * 0.3, -0.075];
+      points.push(...alongPath([corner, end], 13, z, false, 0.08));
     }
   }
 
-  // Bottom edge of body
-  const bodyBottomPoints = 40;
-  for (let i = 0; i < bodyBottomPoints && points.length < N_POINTS; i++) {
-    const u = (i % 11) / 10;
-    const z = -d + ((i / (bodyBottomPoints - 1)) * 2 * d);
-    points.push({
-      x: (u - 0.5) * w,
-      y: -h / 2,
-      z: z,
-    });
-  }
-
-  // Integrated triangular flap - sits ON TOP of body
-  // Left flap surface (from body top edge to tip)
-  const flapLeftPoints = 120;
-  for (let i = 0; i < flapLeftPoints && points.length < N_POINTS; i++) {
-    const u = (i % 12) / 11;
-    const v = Math.floor(i / 12) / (Math.ceil(flapLeftPoints / 12) - 1);
-    
-    // Flap edges: from left end of top to tip point
-    const x = (u - 0.5) * w;
-    const topY = h / 2;
-    const tipY = topY + flapH;
-    const tipX = 0;
-    
-    // Left side of flap (z = -d)
-    const p1x = x;
-    const p1y = topY;
-    const p1z = -d;
-    
-    // Right side of flap (z = d)
-    const p2x = x;
-    const p2y = topY;
-    const p2z = d;
-    
-    // Tip point (z = 0, centered)
-    const p3x = tipX;
-    const p3y = tipY;
-    const p3z = 0;
-    
-    // Interpolate across the flap surface
-    points.push({
-      x: p1x * (1 - v) + p3x * v,
-      y: p1y * (1 - v) + p3y * v,
-      z: p1z * (1 - u) + p2z * u + (p3z - p1z * (1 - u) - p2z * u) * v,
-    });
-  }
-
-  // Fill remaining points
-  while (points.length < N_POINTS) {
-    points.push({
-      x: 0,
-      y: h / 2,
-      z: 0,
-    });
-  }
+  // Rim: the remaining points close the thin edge between the two faces.
+  points.push(...alongPath(outline, N_POINTS - points.length, 0, true));
 
   return points.slice(0, N_POINTS);
 };
@@ -118,7 +76,6 @@ const generateMailPoints = (): Point3D[] => {
 const invertYAxis = (points: Point3D[]): Point3D[] =>
   points.map((p) => ({ ...p, y: -p.y }));
 
-export const MAIL_POINTS = scaleShape(
-  invertYAxis(normalizeShape(generateMailPoints())),
-  0.85
+export const MAIL_POINTS = orderForMorph(
+  scaleShape(invertYAxis(normalizeShape(generateMailPoints())), 0.76),
 );
