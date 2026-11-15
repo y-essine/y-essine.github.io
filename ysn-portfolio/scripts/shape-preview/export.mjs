@@ -29,6 +29,24 @@ const shapes = mod.ALL_SHAPES.map((pts, i) => ({
   points: pts.map((p) => [+p.x.toFixed(3), +p.y.toFixed(3), +p.z.toFixed(3)]),
 }));
 
+// The on-demand shapes (components/shapes/extra/*_data.ts, baked by
+// gen-extras.mjs): flat triples in half units. `sway` marks the flat ones the
+// site shows facing the viewer instead of spinning, `depthFloor` their minimum
+// depth-fade range, and `stage` the ones that need the enlarged canvas. Keep both in sync with components/morphing-object-extras.ts.
+const EXTRA = {
+  fomo: { sway: true, depthFloor: 110 }, mailtrace: { sway: true, depthFloor: 110 },
+  meme_paper: { sway: true, depthFloor: 110 }, rocket: {}, burst: { stage: 3 },
+  yessine: { sway: true, stage: 3, depthFloor: 170 },
+};
+const extraDir = path.join(shapesDir, "extra");
+for (const [name, flags] of Object.entries(EXTRA)) {
+  const src = readFileSync(path.join(extraDir, `${name}_data.ts`), "utf8");
+  const flat = src.slice(src.indexOf("= [") + 3, src.lastIndexOf("]")).split(",").filter((v) => v.trim()).map((v) => +v / 2);
+  const points = [];
+  for (let i = 0; i < flat.length; i += 3) points.push(flat.slice(i, i + 3));
+  shapes.push({ name, points, extra: true, ...flags });
+}
+
 // Quick stats: catches wrong point counts, NaNs and points piled on one spot.
 for (const s of shapes) {
   const keys = new Set(s.points.map((p) => p.map((v) => v.toFixed(1)).join(",")));
@@ -38,7 +56,7 @@ for (const s of shapes) {
     return `${Math.min(...vals).toFixed(0)}..${Math.max(...vals).toFixed(0)}`;
   });
   console.log(
-    `${s.name.padEnd(7)} n=${s.points.length} distinct=${keys.size} nonfinite=${bad} x=${ext[0]} y=${ext[1]} z=${ext[2]}`
+    `${s.name.padEnd(10)} n=${s.points.length} distinct=${keys.size} nonfinite=${bad} x=${ext[0]} y=${ext[1]} z=${ext[2]}`
   );
 }
 

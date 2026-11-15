@@ -8,6 +8,6 @@ q="${1:-}"; out="${2:-out/preview.png}"
 browser="$(command -v chromium || command -v google-chrome-stable)"
 "$browser" --headless=new --disable-gpu --hide-scrollbars --force-device-scale-factor=1 \
   --user-data-dir="$(mktemp -d)" --allow-file-access-from-files \
-  --window-size="${WIN:-1500,2300}" --virtual-time-budget=2000 \
+  --window-size="${WIN:-1500,5600}" --virtual-time-budget=2000 \
   --screenshot="$PWD/$out" "file://$PWD/preview.html?$q" >/dev/null 2>&1
 echo "wrote $PWD/$out"
