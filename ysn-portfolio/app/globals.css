@@ -43,3 +43,37 @@ video::-webkit-media-controls-start-playback-button {
   display: none !important;
   -webkit-appearance: none;
 }
+
+/* Sections land below the fixed navbar when reached by #hash or the command
+   palette. */
+main > section[id] {
+  scroll-margin-top: 4.5rem;
+}
+
+/* Command palette entrance (components/command-palette.tsx). */
+@keyframes command-palette-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes command-palette-pop {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+}
+
+.command-palette-scrim {
+  animation: command-palette-fade 120ms ease-out;
+}
+
+.command-palette-panel {
+  animation: command-palette-pop 120ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .command-palette-panel {
+    animation-name: command-palette-fade;
+  }
+}

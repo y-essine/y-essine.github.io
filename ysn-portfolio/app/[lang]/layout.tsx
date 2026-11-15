@@ -3,6 +3,7 @@ import Script from "next/script";
 import "../fonts.css";
 import "../globals.css";
 import ClarityInit from "@/components/clarity-init";
+import CommandPaletteHost from "@/components/command-palette-host";
 import MorphingObject from "@/components/morphing-object";
 import { BASE_URL, personSchema, websiteSchema } from "@/lib/seo";
 import { locales } from "@/lib/i18n";
@@ -120,6 +121,7 @@ export default async function RootLayout({
         <ClarityInit />
         <MorphingObject />
         {children}
+        <CommandPaletteHost lang={lang} />
       </body>
     </html>
   );
